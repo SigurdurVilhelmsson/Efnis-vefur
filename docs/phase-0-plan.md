@@ -2,6 +2,8 @@
 
 Written 2026-09-25. Nothing here is built yet. It is a proposal to agree on before Phase 1.
 
+> **Answered 2026-09-25 by Siggi:** contrast fixes approved; fee 5.000 kr; email efnis1@gmail.com; "The Icelandic Chemical Society"; nav as proposed; no card icons for now; Þumalputtareglur in scope (Claude proofreads the draft); dev dependencies approved. Still open: Q7–Q11 (decide in Phase 2), and `Ráðstefna_2024.pdf` is still not in the repo.
+
 ## 1. Input inventory
 
 | Expected (KICKOFF.md) | Status |
