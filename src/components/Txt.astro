@@ -1,0 +1,13 @@
+---
+/**
+ * Renders a text value, highlighting TODO(texti) placeholders so missing
+ * copy is impossible to overlook on the page.
+ */
+interface Props {
+	text: string;
+}
+const { text } = Astro.props;
+const isTodo = text.startsWith('TODO(');
+---
+
+{isTodo ? <span class="todo">{text}</span> : text}

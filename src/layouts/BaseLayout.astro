@@ -1,0 +1,61 @@
+---
+/**
+ * Every page uses this layout: <html lang>, head, skip link, header, footer.
+ */
+import { Font } from 'astro:assets';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { localePath, t, type Lang } from '../lib/i18n';
+
+interface Props {
+	lang: Lang;
+	/** Page title; the site name is appended. */
+	title?: string;
+	description?: string;
+	/**
+	 * URL of this page's translation, if one exists. The language switch
+	 * falls back to the other language's homepage when it's missing.
+	 */
+	translation?: string;
+}
+
+const { lang, title, description, translation } = Astro.props;
+const s = t(lang);
+const otherLang: Lang = lang === 'is' ? 'en' : 'is';
+const alternateHref = translation ?? localePath('/', otherLang);
+const fullTitle = title ? `${title} | ${s.siteName}` : s.siteName;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{fullTitle}</title>
+		{description && <meta name="description" content={description} />}
+		<link rel="canonical" href={canonical} />
+		{translation && <link rel="alternate" hreflang={lang} href={canonical} />}
+		{translation && <link rel="alternate" hreflang={otherLang} href={new URL(translation, Astro.site)} />}
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="theme-color" content="#1a6b5a" />
+		<meta name="generator" content={Astro.generator} />
+		<!-- No preload: it would also fetch the unused latin-ext files. Metric-matched
+		     fallbacks from the Fonts API keep the swap free of layout shift. -->
+		<Font cssVariable="--font-source-serif" />
+		<Font cssVariable="--font-dm-sans" />
+		<link rel="stylesheet" href="/styles/global.css" />
+	</head>
+	<body>
+		<a class="skip-link" href="#main">{s.skipToContent}</a>
+		<SiteHeader lang={lang} alternateHref={alternateHref} />
+		<main id="main" tabindex="-1">
+			<slot />
+		</main>
+		<SiteFooter lang={lang} />
+	</body>
+</html>
+
+<style>
+	main:focus { outline: none; }
+</style>

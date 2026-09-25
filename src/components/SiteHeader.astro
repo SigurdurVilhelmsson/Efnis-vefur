@@ -1,0 +1,163 @@
+---
+/**
+ * Sticky site header (SiteHeader.jsx): logo lockup, main nav, "Gerast félagi"
+ * button and language switch. The phone menu uses <details>, so no JavaScript.
+ * The link list is rendered twice (desktop row / phone panel); CSS shows one.
+ */
+import EfnisMark from './EfnisMark.astro';
+import { localePath, mainNav, t, type Lang } from '../lib/i18n';
+
+interface Props {
+	lang: Lang;
+	/** URL of this page in the other language, or that language's homepage. */
+	alternateHref: string;
+}
+
+const { lang, alternateHref } = Astro.props;
+const s = t(lang);
+const nav = mainNav[lang];
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => path === href || path.startsWith(href);
+const joinHref = lang === 'is' ? '/um-efnis/felagsadild/' : '/en/#membership';
+---
+
+<header class="site-header">
+	<div class="container inner">
+		<a class="brand" href={localePath('/', lang)}>
+			<EfnisMark size={36} />
+			<span class="wordmark">
+				<span class="name">{t('is').siteName}</span>
+				<span class="sub" lang="en">{s.siteNameEn}</span>
+			</span>
+		</a>
+
+		<nav class="nav-desktop" aria-label={s.mainNav}>
+			<ul>
+				{nav.map((item) => (
+					<li>
+						<a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+					</li>
+				))}
+			</ul>
+			<a class="btn btn--primary join" href={joinHref}>{s.join}</a>
+			<a class="lang" href={alternateHref} lang={s.otherLangCode} hreflang={s.otherLangCode}>{s.otherLang}</a>
+		</nav>
+
+		<details class="nav-phone">
+			<summary>
+				<span>{s.menu}</span>
+				<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+					<line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+				</svg>
+			</summary>
+			<nav aria-label={s.mainNav}>
+				<ul>
+					{nav.map((item) => (
+						<li>
+							<a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+						</li>
+					))}
+					<li><a class="lang" href={alternateHref} lang={s.otherLangCode} hreflang={s.otherLangCode}>{s.otherLang}</a></li>
+				</ul>
+				<a class="btn btn--primary" href={joinHref}>{s.join}</a>
+			</nav>
+		</details>
+	</div>
+</header>
+
+<style>
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 100;
+		background: rgba(251, 251, 249, 0.92);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border-bottom: 1px solid var(--border-soft);
+	}
+	.inner {
+		height: var(--header-height);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+	.brand {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		text-decoration: none;
+		min-width: 0;
+	}
+	.brand svg { flex: none; }
+	.wordmark { display: flex; flex-direction: column; line-height: 1.1; min-width: 0; }
+	.name {
+		font-family: var(--font-serif);
+		font-weight: 700;
+		font-size: 1.05rem;
+		color: var(--primary-dark);
+		letter-spacing: -0.01em;
+	}
+	.sub {
+		font-weight: 500;
+		font-size: 0.65rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--fg-2);
+		margin-top: 2px;
+	}
+
+	ul { list-style: none; margin: 0; padding: 0; }
+
+	.nav-desktop { display: flex; align-items: center; gap: 1.5rem; }
+	.nav-desktop ul { display: flex; gap: 1.25rem; }
+	.nav-desktop a:not(.btn) { color: var(--fg-2); font-weight: 500; font-size: 0.9rem; }
+	.nav-desktop a:not(.btn):hover,
+	.nav-desktop a[aria-current='page'] { color: var(--primary); }
+	.nav-desktop a[aria-current='page'] { text-decoration: underline; text-underline-offset: 0.4em; text-decoration-thickness: 2px; }
+	.join { padding: 0.45rem 1.1rem; font-size: 0.85rem; }
+	.lang { font-size: 0.85rem; }
+
+	.nav-phone { display: none; position: relative; }
+	.nav-phone summary {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		list-style: none;
+		cursor: pointer;
+		padding: 0.5rem 0.25rem;
+		color: var(--primary-dark);
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+	.nav-phone summary::-webkit-details-marker { display: none; }
+	.nav-phone nav {
+		position: absolute;
+		right: calc(-1 * var(--gutter));
+		top: calc(100% + 0.6rem);
+		width: min(20rem, 100vw);
+		background: var(--bg-card);
+		border: 1px solid var(--border-soft);
+		border-radius: 0 0 var(--efnis-radius-md) var(--efnis-radius-md);
+		box-shadow: var(--efnis-shadow-lg);
+		padding: 0.75rem 1.25rem 1.25rem;
+	}
+	.nav-phone li a {
+		display: block;
+		padding: 0.65rem 0;
+		border-bottom: 1px solid var(--border-soft);
+		color: var(--fg-1);
+		font-weight: 500;
+	}
+	.nav-phone li a[aria-current='page'] { color: var(--primary); font-weight: 600; }
+	.nav-phone .btn { margin-top: 1rem; width: 100%; }
+
+	@media (max-width: 960px) {
+		.nav-desktop { display: none; }
+		.nav-phone { display: block; }
+	}
+	@media (max-width: 420px) {
+		.sub { display: none; }
+		.name { font-size: 0.95rem; }
+	}
+</style>
