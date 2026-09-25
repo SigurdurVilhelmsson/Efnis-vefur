@@ -1,7 +1,8 @@
 ---
 /**
- * Sticky site header (SiteHeader.jsx): logo lockup, main nav, "Gerast félagi"
- * button and language switch. The phone menu uses <details>, so no JavaScript.
+ * Sticky site header (SiteHeader.jsx): logo lockup, main nav and language
+ * switch. The kit's "Gerast félagi" button was dropped: membership isn't open
+ * to everyone (bylaws, 3. grein), so it's not a call to action. The phone menu uses <details>, so no JavaScript.
  * The link list is rendered twice (desktop row / phone panel); CSS shows one.
  */
 import EfnisMark from './EfnisMark.astro';
@@ -18,7 +19,6 @@ const s = t(lang);
 const nav = mainNav[lang];
 const path = Astro.url.pathname;
 const isCurrent = (href: string) => path === href || path.startsWith(href);
-const joinHref = lang === 'is' ? '/um-efnis/felagsadild/' : '/en/#membership';
 ---
 
 <header class="site-header">
@@ -39,7 +39,6 @@ const joinHref = lang === 'is' ? '/um-efnis/felagsadild/' : '/en/#membership';
 					</li>
 				))}
 			</ul>
-			<a class="btn btn--primary join" href={joinHref}>{s.join}</a>
 			<a class="lang" href={alternateHref} lang={s.otherLangCode} hreflang={s.otherLangCode}>{s.otherLang}</a>
 		</nav>
 
@@ -59,7 +58,6 @@ const joinHref = lang === 'is' ? '/um-efnis/felagsadild/' : '/en/#membership';
 					))}
 					<li><a class="lang" href={alternateHref} lang={s.otherLangCode} hreflang={s.otherLangCode}>{s.otherLang}</a></li>
 				</ul>
-				<a class="btn btn--primary" href={joinHref}>{s.join}</a>
 			</nav>
 		</details>
 	</div>
@@ -115,7 +113,6 @@ const joinHref = lang === 'is' ? '/um-efnis/felagsadild/' : '/en/#membership';
 	.nav-desktop a:not(.btn):hover,
 	.nav-desktop a[aria-current='page'] { color: var(--primary); }
 	.nav-desktop a[aria-current='page'] { text-decoration: underline; text-underline-offset: 0.4em; text-decoration-thickness: 2px; }
-	.join { padding: 0.45rem 1.1rem; font-size: 0.85rem; }
 	.lang { font-size: 0.85rem; }
 
 	.nav-phone { display: none; position: relative; }
@@ -150,7 +147,6 @@ const joinHref = lang === 'is' ? '/um-efnis/felagsadild/' : '/en/#membership';
 		font-weight: 500;
 	}
 	.nav-phone li a[aria-current='page'] { color: var(--primary); font-weight: 600; }
-	.nav-phone .btn { margin-top: 1rem; width: 100%; }
 
 	@media (max-width: 960px) {
 		.nav-desktop { display: none; }

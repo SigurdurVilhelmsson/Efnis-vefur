@@ -22,12 +22,14 @@ const year = new Date().getFullYear();
 				<EfnisMark size={32} reversed />
 				<span lang="is">{t('is').siteName}</span>
 			</p>
-			{lang === 'is'
-				? <p>Stofnað 1999. Félag efnafræðinga, kennara, nemenda og áhugafólks um efnafræði á Íslandi.</p>
-				: <p>Founded in 1999. The professional society for chemistry in Iceland.</p>}
+			<p>{lang === 'is' ? 'Reykjavík · stofnað 1999' : 'Reykjavík · founded 1999'}</p>
 			<p>
 				<span class="visually-hidden">{s.contact}: </span>
 				<a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+			</p>
+			<p class="emblem">
+				{site.emblemTeaser[lang]}{' '}
+				<a href={lang === 'is' ? '/um-efnis/#merki' : '/en/um-efnis/#emblem'}>{s.emblemMore} →</a>
 			</p>
 		</div>
 
@@ -79,7 +81,9 @@ const year = new Date().getFullYear();
 		color: #fff;
 		margin-bottom: 0.75rem;
 	}
-	.about p:not(.brand) { max-width: 38ch; margin-bottom: 0.5rem; }
+	.about p:not(.brand) { max-width: 44ch; margin-bottom: 0.5rem; }
+	.emblem { margin-top: 1rem; font-size: 0.85rem; }
+	.emblem a { white-space: nowrap; }
 	h2 {
 		color: #fff;
 		font-size: 0.95rem;

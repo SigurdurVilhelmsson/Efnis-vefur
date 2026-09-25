@@ -1,7 +1,11 @@
 /**
- * Homepage copy, verbatim from _input/content/efnis-homepage-content.md
- * (Icelandic) and the UI kit (CTA band). Phase 2 moves it into content files.
+ * Homepage copy, verbatim from _input/content/efnis-homepage-content.md, except
+ * where noted: the fourth card and the membership band use
+ * _input/content/efnis-about-content.md, because membership is not open to
+ * everyone (bylaws, 3. grein). Phase 2 moves this into content files.
  */
+import type { Section } from './sections';
+
 export const homepageIs = {
 	hero: {
 		eyebrow: 'Efnafræðifélag Íslands',
@@ -14,15 +18,24 @@ export const homepageIs = {
 		{ title: 'Efnafræði á Íslandi', text: 'Rannsóknir, iðnaður og nýsköpun — frá jarðhita til lyfjaþróunar.', href: '/efnafradi-a-islandi/' },
 		{ title: 'Menntun og úrræði', text: 'Fyrir kennara og nemendur: keppnir, námsefni, íðorðabanki og fleira.', href: '/menntun/' },
 		{ title: 'Ráðstefnur Efnís', text: 'Árleg ráðstefna félagsins — erindi, veggspjöld og fagleg samvera.', href: '/radstefnur/' },
-		{ title: 'Gerðu þig félag', text: 'Opið öllum sem starfa við eða hafa áhuga á efnafræði.', href: '/um-efnis/felagsadild/' },
+		// Was "Gerðu þig félag — Opið öllum …", which contradicts the bylaws.
+		// Text from the About page intro.
+		{ title: 'Um Efnís', text: 'Efnís er vettvangur fyrir alla sem starfa við efnafræði á Íslandi eða hafa áhuga á henni.', href: '/um-efnis/' },
 	],
 	rules: {
 		title: 'Þumalputtareglur um efnafræði',
 		text: 'Fimmtán stuttar reglur til að ræða efnafræði af skynsemi og nákvæmni — án hræðslu eða oftrúar.',
 	},
-	cta: {
-		title: 'Gerstu félagi í Efnís',
-		text: 'Opið öllum sem hafa áhuga á efnafræði — nemendum, kennurum, rannsakendum og sérfræðingum úr iðnaði.',
+	// Membership information band (replaces the UI kit's "Gerstu félagi" call to
+	// action). Text from the About page, "Félagsaðild".
+	membership: {
+		title: 'Félagsaðild',
+		text: [
+			'Félagsaðild er opin öllum sem lokið hafa háskólaprófi í efnafræði, efnaverkfræði, lífefnafræði eða skyldum greinum, sem og raungreinakennurum í grunn- og framhaldsskólum sem lokið hafa háskólaprófi. Háskólanemar í efnafræði, efnaverkfræði eða lífefnafræði geta sótt um aukaaðild að félaginu.',
+			'Árgjald félagsins er 3.000 kr.',
+		],
+		linkLabel: 'Nánari upplýsingar um félagsaðild',
+		href: '/um-efnis/felagsadild/',
 	},
 };
 
@@ -31,7 +44,6 @@ export const homepageEn = {
 	title: 'The Icelandic Chemical Society (Efnís)',
 	sections: [
 		{
-			heading: null,
 			paragraphs: [
 				'Efnafræðifélag Íslands — the Icelandic Chemical Society, known as Efnís — is a professional society for chemists, chemical engineers, biochemists, teachers, and students in Iceland. Founded in 1999 and based in Reykjavík, Efnís serves as a meeting point for everyone working with chemistry in Iceland, whether in education, academic research, or industry.',
 			],
@@ -49,11 +61,11 @@ export const homepageEn = {
 			],
 		},
 		{
+			id: 'membership',
 			heading: 'Membership',
 			paragraphs: [
 				'Membership in Efnís is open to anyone who holds a university degree in chemistry, chemical engineering, biochemistry, or related fields, as well as science teachers in primary and secondary schools with a university degree. University students in chemistry, chemical engineering, or biochemistry may apply for associate membership.',
-				// Fee corrected from the draft's 3,000 ISK to 5.000 kr (Siggi, 2026-09-25).
-				'Annual membership fee: 5,000 ISK.',
+				'Annual membership fee: 3,000 ISK (approx. €20).',
 				'To join or enquire about membership, contact us at efnis1@gmail.com.',
 			],
 		},
@@ -86,5 +98,5 @@ export const homepageEn = {
 				'The society is governed by a volunteer board elected at the annual general meeting. The current board and the society\'s bylaws can be found under "Um félagið" on the main site.',
 			],
 		},
-	],
+	] satisfies Section[],
 };

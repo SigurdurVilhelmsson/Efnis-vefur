@@ -27,7 +27,8 @@ export const ui = {
 		mainNav: 'Aðalvalmynd', // (UI)
 		breadcrumbs: 'Brauðmolar', // (UI)
 		home: 'Forsíða',
-		join: 'Gerast félagi',
+		membership: 'Félagsaðild',
+		emblemMore: 'Merki félagsins',
 		otherLang: 'English',
 		otherLangCode: 'en',
 		news: 'Fréttir',
@@ -53,7 +54,8 @@ export const ui = {
 		mainNav: 'Main navigation',
 		breadcrumbs: 'Breadcrumbs',
 		home: 'Home',
-		join: 'Membership',
+		membership: 'Membership',
+		emblemMore: 'Our emblem',
 		otherLang: 'Íslenska',
 		otherLangCode: 'is',
 		news: 'News',
@@ -84,7 +86,8 @@ export interface NavItem {
 	href: string;
 }
 
-/** Main navigation (agreed with Siggi, 2026-09-25). English has no main nav yet. */
+/** Main navigation (agreed with Siggi, 2026-09-25). English only has pages
+ *  that exist in English. */
 export const mainNav: Record<Lang, NavItem[]> = {
 	is: [
 		{ label: 'Efnafræði á Íslandi', href: '/efnafradi-a-islandi/' },
@@ -93,5 +96,5 @@ export const mainNav: Record<Lang, NavItem[]> = {
 		{ label: 'Fréttir', href: '/frettir/' },
 		{ label: 'Um Efnís', href: '/um-efnis/' },
 	],
-	en: [],
+	en: [{ label: 'About', href: '/en/um-efnis/' }],
 };

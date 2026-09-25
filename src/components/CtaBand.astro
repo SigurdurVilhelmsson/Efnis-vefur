@@ -1,5 +1,5 @@
 ---
-/** Membership call to action (Footer.jsx → CtaBand). */
+/** Dark call-out band (Footer.jsx → CtaBand); used for membership info. */
 interface Props {
 	title: string;
 	id?: string;
@@ -23,6 +23,7 @@ const { title, id } = Astro.props;
 		padding: 3.5rem 0;
 	}
 	h2 { color: #fff; font-size: var(--text-xl); margin-bottom: 0.75rem; }
-	.text { color: rgba(255, 255, 255, 0.9); max-width: 520px; margin: 0 auto 1.5rem; }
+	.text { color: rgba(255, 255, 255, 0.9); max-width: 640px; margin: 0 auto 1.5rem; }
 	.text :global(p) { margin: 0; }
+	.text :global(p + p) { margin-top: 0.75rem; }
 </style>

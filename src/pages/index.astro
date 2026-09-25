@@ -11,11 +11,9 @@ import { homepageIs as copy } from '../data/homepage';
 import { site } from '../data/site';
 import { events, news } from '../data/placeholder';
 import { rules } from '../data/thumalputtareglur';
-import { formatNumber } from '../lib/format';
 import { t } from '../lib/i18n';
 
 const s = t('is');
-const joinLabel = `${s.join} — ${formatNumber(site.membershipFee, 'is')} kr/ár`;
 
 // "Næsti viðburður" is computed at build time; a daily rebuild (Phase 4)
 // makes it roll over when an event has passed.
@@ -30,10 +28,7 @@ const latestNews = [...news].sort((a, b) => b.date.getTime() - a.date.getTime())
 <BaseLayout lang="is" description={copy.hero.tagline} translation="/en/">
 	<HeroBand eyebrow={copy.hero.eyebrow} title={copy.hero.title} tagline={copy.hero.tagline}>
 		<p>{copy.hero.intro}</p>
-		<Fragment slot="actions">
-			<Button variant="accent" href="/um-efnis/felagsadild/">{joinLabel}</Button>
-			<Button variant="ghost" href="#thumalputtareglur">{s.rules} ↓</Button>
-		</Fragment>
+		<Button slot="actions" variant="accent" href="#thumalputtareglur">{s.rules} ↓</Button>
 	</HeroBand>
 
 	<div class="section">
@@ -65,9 +60,9 @@ const latestNews = [...news].sort((a, b) => b.date.getTime() - a.date.getTime())
 
 	<RulesCarousel lang="is" rules={rules} title={copy.rules.title} intro={copy.rules.text} href="/thumalputtareglur/" />
 
-	<CtaBand title={copy.cta.title}>
-		<p>{copy.cta.text}</p>
-		<Button slot="actions" variant="accent" href="/um-efnis/felagsadild/">{joinLabel}</Button>
+	<CtaBand title={copy.membership.title}>
+		{copy.membership.text.map((p) => <p>{p}</p>)}
+		<Button slot="actions" variant="ghost" href={copy.membership.href}>{copy.membership.linkLabel} →</Button>
 	</CtaBand>
 </BaseLayout>
 

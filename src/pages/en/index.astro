@@ -1,29 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeroBand from '../../components/HeroBand.astro';
+import Sections from '../../components/Sections.astro';
 import { homepageEn } from '../../data/homepage';
-import { slugify } from '../../lib/slugify';
 
 const [intro, ...sections] = homepageEn.sections;
 ---
 
 <BaseLayout lang="en" description="The Icelandic Chemical Society (Efnís), founded in 1999." translation="/">
 	<HeroBand title={homepageEn.title}>
-		{intro.paragraphs.map((p) => <p>{p}</p>)}
+		{intro.paragraphs?.map((p) => <p>{p}</p>)}
 	</HeroBand>
 	<div class="container container--narrow section prose">
-		{sections.map((sec) => (
-			<section id={sec.heading === 'Membership' ? 'membership' : slugify(sec.heading ?? '')}>
-				<h2>{sec.heading}</h2>
-				{sec.paragraphs.map((p) => <p>{p}</p>)}
-				{sec.list && <ul>{sec.list.map((li) => <li>{li}</li>)}</ul>}
-				{sec.after?.map((p) => <p>{p}</p>)}
-			</section>
-		))}
+		<Sections sections={sections} />
 	</div>
 </BaseLayout>
-
-<style>
-	section + section { margin-top: 2.5rem; }
-	section > :global(* + *) { margin-top: 1em; }
-</style>

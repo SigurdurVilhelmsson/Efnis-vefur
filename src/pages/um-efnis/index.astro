@@ -1,16 +1,14 @@
 ---
-import PageLayout from '../../layouts/PageLayout.astro';
-import CardGrid from '../../components/CardGrid.astro';
-import Todo from '../../components/Todo.astro';
-
-const sub = [
-	{ title: 'Félagsaðild', text: 'TODO(texti): stutt lýsing', href: '/um-efnis/felagsadild/' },
-	{ title: 'Stjórn', text: 'TODO(texti): stutt lýsing', href: '/um-efnis/stjorn/' },
-	{ title: 'Lög félagsins', text: 'TODO(texti): stutt lýsing', href: '/um-efnis/log/' },
-];
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Sections from '../../components/Sections.astro';
+import { aboutIs } from '../../data/about';
 ---
 
-<PageLayout lang="is" title="Um Efnís" crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Um Efnís' }]}>
-	<Todo what="lýsing á félaginu (síðan „Um félagið“ á WordPress, flutt í 3. áfanga)" />
-	<CardGrid cards={sub} headingLevel={2} columns={3} />
-</PageLayout>
+<BaseLayout lang="is" title="Um Efnís" description={aboutIs.intro} translation="/en/um-efnis/">
+	<PageHero lang="is" title={aboutIs.title} crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Um Efnís' }]} />
+	<div class="container container--narrow section prose">
+		<p class="lead">{aboutIs.intro}</p>
+		<Sections sections={aboutIs.sections} />
+	</div>
+</BaseLayout>
