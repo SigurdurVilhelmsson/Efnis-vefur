@@ -25,6 +25,7 @@ const otherLang: Lang = lang === 'is' ? 'en' : 'is';
 const alternateHref = translation ?? localePath('/', otherLang);
 const fullTitle = title ? `${title} | ${s.siteName}` : s.siteName;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const isErrorPage = Astro.url.pathname.startsWith('/404');
 ---
 
 <!doctype html>
@@ -34,7 +35,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>{fullTitle}</title>
 		{description && <meta name="description" content={description} />}
-		<link rel="canonical" href={canonical} />
+		{isErrorPage ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
 		{translation && <link rel="alternate" hreflang={lang} href={canonical} />}
 		{translation && <link rel="alternate" hreflang={otherLang} href={new URL(translation, Astro.site)} />}
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />

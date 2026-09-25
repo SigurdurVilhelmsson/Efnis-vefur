@@ -1,0 +1,16 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import CardGrid from '../../components/CardGrid.astro';
+import Todo from '../../components/Todo.astro';
+
+const sub = [
+	{ title: 'Félagsaðild', text: 'TODO(texti): stutt lýsing', href: '/um-efnis/felagsadild/' },
+	{ title: 'Stjórn', text: 'TODO(texti): stutt lýsing', href: '/um-efnis/stjorn/' },
+	{ title: 'Lög félagsins', text: 'TODO(texti): stutt lýsing', href: '/um-efnis/log/' },
+];
+---
+
+<PageLayout lang="is" title="Um Efnís" crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Um Efnís' }]}>
+	<Todo what="lýsing á félaginu (síðan „Um félagið“ á WordPress, flutt í 3. áfanga)" />
+	<CardGrid cards={sub} headingLevel={2} columns={3} />
+</PageLayout>

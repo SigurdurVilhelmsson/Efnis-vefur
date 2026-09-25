@@ -1,15 +1,95 @@
 ---
-// Phase 0 placeholder. Replaced by the real homepage in Phase 1.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroBand from '../components/HeroBand.astro';
+import CardGrid from '../components/CardGrid.astro';
+import EventBlock from '../components/EventBlock.astro';
+import NewsListItem from '../components/NewsListItem.astro';
+import RulesCarousel from '../components/RulesCarousel.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Button from '../components/Button.astro';
+import { homepageIs as copy } from '../data/homepage';
+import { site } from '../data/site';
+import { events, news } from '../data/placeholder';
+import { rules } from '../data/thumalputtareglur';
+import { formatNumber } from '../lib/format';
+import { t } from '../lib/i18n';
+
+const s = t('is');
+const joinLabel = `${s.join} — ${formatNumber(site.membershipFee, 'is')} kr/ár`;
+
+// "Næsti viðburður" is computed at build time; a daily rebuild (Phase 4)
+// makes it roll over when an event has passed.
+const now = new Date();
+const nextEvent = events
+	.filter((e) => e.start >= now)
+	.sort((a, b) => a.start.getTime() - b.start.getTime())[0];
+
+const latestNews = [...news].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 3);
 ---
 
-<html lang="is">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Efnafræðifélag Íslands</title>
-	</head>
-	<body>
-		<h1>Efnafræðifélag Íslands</h1>
-	</body>
-</html>
+<BaseLayout lang="is" description={copy.hero.tagline} translation="/en/">
+	<HeroBand eyebrow={copy.hero.eyebrow} title={copy.hero.title} tagline={copy.hero.tagline}>
+		<p>{copy.hero.intro}</p>
+		<Fragment slot="actions">
+			<Button variant="accent" href="/um-efnis/felagsadild/">{joinLabel}</Button>
+			<Button variant="ghost" href="#thumalputtareglur">{s.rules} ↓</Button>
+		</Fragment>
+	</HeroBand>
+
+	<div class="section">
+		<div class="container">
+			<CardGrid cards={copy.cards} headingLevel={2} />
+		</div>
+	</div>
+
+	<div class="section section--cream">
+		<div class="container split">
+			<section aria-labelledby="next-event">
+				<h2 id="next-event">{s.nextEvent}</h2>
+				{nextEvent
+					? <EventBlock lang="is" title={nextEvent.title} start={nextEvent.start} place={nextEvent.place} href={`/vidburdir/${nextEvent.slug}/`} registrationUrl={nextEvent.registrationUrl} />
+					: <p class="fallback">{site.nextEventFallback.is}</p>}
+			</section>
+
+			<section aria-labelledby="latest-news">
+				<h2 id="latest-news">{s.news}</h2>
+				<ul class="news" role="list">
+					{latestNews.map((n) => (
+						<li><NewsListItem lang="is" title={n.title} date={n.date} href={`/frettir/${n.slug}/`} /></li>
+					))}
+				</ul>
+				<p class="all"><a href="/frettir/">{s.allNews}</a></p>
+			</section>
+		</div>
+	</div>
+
+	<RulesCarousel lang="is" rules={rules} title={copy.rules.title} intro={copy.rules.text} href="/thumalputtareglur/" />
+
+	<CtaBand title={copy.cta.title}>
+		<p>{copy.cta.text}</p>
+		<Button slot="actions" variant="accent" href="/um-efnis/felagsadild/">{joinLabel}</Button>
+	</CtaBand>
+</BaseLayout>
+
+<style>
+	.split {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+		gap: clamp(2rem, 5vw, 4rem);
+		align-items: start;
+	}
+	h2 { margin-bottom: 1rem; }
+	.fallback {
+		background: var(--bg-card);
+		border-radius: var(--efnis-radius-md);
+		border-left: 3px solid var(--accent);
+		padding: 1.5rem;
+		margin: 0;
+	}
+	.news { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
+	.news :global(.item) { background: var(--bg-card); }
+	.all { margin: 1rem 0 0; font-weight: 600; }
+	@media (max-width: 768px) {
+		.split { grid-template-columns: 1fr; }
+	}
+</style>

@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import { homepageIs } from '../../data/homepage';
+import { rules, rulesIntro } from '../../data/thumalputtareglur';
+import { inlineMarkdown } from '../../lib/inline-md';
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<BaseLayout lang="is" title={homepageIs.rules.title} description={homepageIs.rules.text}>
+	<PageHero
+		lang="is"
+		title={homepageIs.rules.title}
+		meta={homepageIs.rules.text}
+		crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Þumalputtareglur' }]}
+	/>
+	<div class="container container--narrow section">
+		<p class="draft"><span class="todo">TODO(texti): reglurnar eru drög (útgáfa 2, apríl 2026) sem bíða yfirlestrar og samþykkis</span></p>
+		<p class="lead">{rulesIntro}</p>
+		<ol class="rules" role="list">
+			{rules.map((r) => (
+				<li id={`regla-${r.n}`} class="rule">
+					<h2>
+						<span class="num" aria-hidden="true">{pad(r.n)}</span>
+						<span class="visually-hidden">{r.n}. </span>
+						{r.title}
+					</h2>
+					<div class="body">
+						<Icon name={r.icon} size={32} class="icon" />
+						<p set:html={inlineMarkdown(r.body)}></p>
+					</div>
+				</li>
+			))}
+		</ol>
+	</div>
+</BaseLayout>
+
+<style>
+	.draft { margin-bottom: 1.5rem; }
+	.lead { font-size: var(--text-md); color: var(--fg-2); margin-bottom: 2.5rem; }
+	.rules { list-style: none; margin: 0; padding: 0; }
+	.rule { padding-block: 1.75rem; border-top: 1px solid var(--border-soft); }
+	h2 { display: flex; align-items: baseline; gap: 0.75rem; font-size: 1.4rem; margin-bottom: 0.75rem; }
+	.num { font-size: 2rem; line-height: 1; color: var(--primary); flex: none; min-width: 2.2ch; }
+	/* Alternating numerals; amber-dark keeps 3:1 for large text. */
+	.rule:nth-child(even) .num { color: var(--accent-dark); }
+	.body { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start; }
+	.body :global(.icon) { color: var(--primary-dark); margin-top: 0.2rem; }
+	.body p { color: var(--fg-1); margin: 0; }
+	@media (max-width: 480px) {
+		.body { grid-template-columns: 1fr; }
+	}
+</style>

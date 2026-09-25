@@ -314,7 +314,7 @@ code, pre {
 .prose h2 + *, .prose h3 + * { margin-top: 0; }
 .prose ul, .prose ol { padding-left: 1.4rem; margin-bottom: 0; }
 .prose li + li { margin-top: 0.35em; }
-.prose a { text-decoration: underline; text-underline-offset: 0.15em; text-decoration-thickness: 1px; }
+.prose a:not(.btn) { text-decoration: underline; text-underline-offset: 0.15em; text-decoration-thickness: 1px; }
 .prose blockquote {
   border-left: 3px solid var(--accent);
   padding: 1rem 1.5rem;

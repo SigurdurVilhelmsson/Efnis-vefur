@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import EventBlock from '../../components/EventBlock.astro';
+import { events } from '../../data/placeholder';
+
+const now = new Date();
+const upcoming = events.filter((e) => e.start >= now).sort((a, b) => a.start.getTime() - b.start.getTime());
+const past = events.filter((e) => e.start < now).sort((a, b) => b.start.getTime() - a.start.getTime());
+---
+
+<BaseLayout lang="is" title="Viðburðir">
+	<PageHero lang="is" title="Viðburðir" crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Viðburðir' }]} />
+	<div class="container container--narrow section">
+		<ul class="list" role="list">
+			{upcoming.map((e) => (
+				<li><EventBlock lang="is" title={e.title} start={e.start} place={e.place} href={`/vidburdir/${e.slug}/`} registrationUrl={e.registrationUrl} headingLevel={2} /></li>
+			))}
+		</ul>
+		{past.length > 0 && (
+			<>
+				<h2 class="past-title"><span class="todo">TODO(texti): fyrirsögn — liðnir viðburðir</span></h2>
+				<ul class="list" role="list">
+					{past.map((e) => (
+						<li><EventBlock lang="is" title={e.title} start={e.start} place={e.place} href={`/vidburdir/${e.slug}/`} headingLevel={3} /></li>
+					))}
+				</ul>
+			</>
+		)}
+	</div>
+</BaseLayout>
+
+<style>
+	.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+	.past-title { font-size: var(--text-xl); margin-top: 3rem; }
+</style>

@@ -1,0 +1,44 @@
+---
+/** Conference programme: time, code, title, speaker (radstefnur.programme). */
+import Txt from './Txt.astro';
+
+export interface ProgrammeRow {
+	time: string;
+	code?: string;
+	title: string;
+	speaker?: string;
+}
+interface Props {
+	rows: ProgrammeRow[];
+	caption: string;
+}
+const { rows, caption } = Astro.props;
+---
+
+<div class="table-scroll">
+	<table>
+		<caption class="visually-hidden">{caption}</caption>
+		<tbody>
+			{rows.map((r) => (
+				<tr>
+					<th scope="row" class="time">{r.time}</th>
+					<td>
+						{r.code && <span class="code">{r.code}</span>}
+						<span class="talk"><Txt text={r.title} /></span>
+						{r.speaker && <span class="speaker"><Txt text={r.speaker} /></span>}
+					</td>
+				</tr>
+			))}
+		</tbody>
+	</table>
+</div>
+
+<style>
+	table { width: 100%; border-collapse: collapse; }
+	tr + tr { border-top: 1px solid var(--border-soft); }
+	th, td { padding: 0.85rem 0; vertical-align: top; text-align: left; }
+	.time { font-weight: 600; color: var(--primary); width: 4.5rem; font-size: 0.9rem; }
+	.code { font-size: var(--text-xs); font-weight: 600; color: var(--fg-2); margin-right: 0.5rem; }
+	.talk { font-size: 0.92rem; color: var(--fg-1); }
+	.speaker { display: block; font-size: 0.85rem; color: var(--fg-2); }
+</style>

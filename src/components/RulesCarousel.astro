@@ -1,0 +1,84 @@
+---
+/**
+ * Þumalputtareglur carousel (RulesCarousel.jsx): CSS scroll-snap, moves only
+ * on user input, no JavaScript. Keyboard users scroll it via the focusable
+ * region; each card also links to its rule on the full page.
+ */
+import Icon from './Icon.astro';
+import type { Rule } from '../data/thumalputtareglur';
+import { t, type Lang } from '../lib/i18n';
+
+interface Props {
+	lang: Lang;
+	rules: Rule[];
+	title: string;
+	intro: string;
+	href: string;
+}
+const { lang, rules, title, intro, href } = Astro.props;
+const s = t(lang);
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<section class="section section--warm rules" id="thumalputtareglur" aria-labelledby="rules-title">
+	<div class="container">
+		<div class="section-head">
+			<h2 id="rules-title">{title}</h2>
+			<p>{intro}</p>
+		</div>
+		<p class="hint" aria-hidden="true">{s.swipeHint}</p>
+		<ol class="track" tabindex="0" aria-label={title} role="list">
+			{rules.map((r) => (
+				<li class="rule-card">
+					<div class="top">
+						<span class="num">{pad(r.n)}</span>
+						<Icon name={r.icon} size={28} class="icon" />
+					</div>
+					<h3><a href={`${href}#regla-${r.n}`}>{r.cardTitle}</a></h3>
+					<p>{r.cardText}</p>
+				</li>
+			))}
+		</ol>
+		<p class="more"><a class="btn btn--outline" href={href}>{s.allRules}</a></p>
+	</div>
+</section>
+
+<style>
+	.hint { text-align: center; color: var(--fg-2); font-size: var(--text-sm); font-style: italic; margin-bottom: 0.75rem; }
+	.track {
+		list-style: none;
+		margin: 0;
+		padding: 0.5rem 0.25rem 1.5rem;
+		display: flex;
+		gap: 1.25rem;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		overscroll-behavior-x: contain;
+		scrollbar-color: var(--efnis-teal-100) transparent;
+	}
+	.track:focus-visible { outline-offset: 4px; }
+	.rule-card {
+		flex: 0 0 min(280px, 80vw);
+		scroll-snap-align: start;
+		background: var(--bg-card);
+		border-radius: var(--efnis-radius-md);
+		border-top: 3px solid var(--primary);
+		box-shadow: var(--efnis-shadow-md);
+		padding: 1.5rem;
+		position: relative;
+	}
+	.rule-card:nth-child(even) { border-top-color: var(--accent); }
+	.top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem; }
+	/* Large numerals (≥ 24px bold → 3:1 needed). Amber on white is 2.87:1,
+	   so even cards use amber-dark (4.09:1); the border stays amber. */
+	.num { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 700; color: var(--primary); line-height: 1.2; }
+	.rule-card:nth-child(even) .num { color: var(--accent-dark); }
+	.top :global(.icon) { color: var(--primary-dark); }
+	h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+	h3 a { color: var(--primary-dark); }
+	h3 a::after { content: ''; position: absolute; inset: 0; }
+	h3 a:focus-visible { outline: none; }
+	.rule-card:focus-within { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+	.rule-card p { font-size: 0.86rem; color: var(--fg-2); line-height: 1.5; margin: 0; }
+	.more { text-align: center; margin: 1rem 0 0; }
+</style>

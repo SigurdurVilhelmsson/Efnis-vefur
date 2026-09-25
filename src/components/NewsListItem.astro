@@ -1,0 +1,37 @@
+---
+/** One news item in a list: date, linked title, summary. */
+import Txt from './Txt.astro';
+import { formatDate } from '../lib/format';
+import type { Lang } from '../lib/i18n';
+
+interface Props {
+	lang: Lang;
+	title: string;
+	date: Date;
+	href: string;
+	summary?: string;
+	headingLevel?: 2 | 3;
+}
+const { lang, title, date, href, summary, headingLevel = 3 } = Astro.props;
+const H = `h${headingLevel}` as 'h2' | 'h3';
+---
+
+<article class="item">
+	<p class="date"><time datetime={date.toISOString()}>{formatDate(date, lang)}</time></p>
+	<H class="title"><a href={href}><Txt text={title} /></a></H>
+	{summary && <p class="summary"><Txt text={summary} /></p>}
+</article>
+
+<style>
+	.item {
+		padding: 1rem 1.25rem;
+		background: var(--bg-2);
+		border-radius: var(--efnis-radius-sm);
+		height: 100%;
+	}
+	.date { font-size: var(--text-sm); color: var(--fg-2); margin-bottom: 0.25rem; }
+	.title { font-size: 1.1rem; margin-bottom: 0.35rem; }
+	.title a { color: var(--primary-dark); }
+	.title a:hover { color: var(--primary); }
+	.summary { color: var(--fg-2); font-size: 0.92rem; margin: 0; }
+</style>

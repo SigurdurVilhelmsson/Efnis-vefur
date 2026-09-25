@@ -1,0 +1,48 @@
+---
+/**
+ * Grid of navigation cards: white, 6px radius, 3px top border alternating
+ * teal/amber, hover lift. The whole card is clickable via the heading link.
+ */
+import Txt from './Txt.astro';
+
+interface Props {
+	cards: { title: string; text: string; href: string }[];
+	headingLevel?: 2 | 3;
+	/** Columns on wide screens (collapses to 2, then 1). */
+	columns?: 2 | 3 | 4;
+}
+const { cards, headingLevel = 3, columns = 4 } = Astro.props;
+const H = `h${headingLevel}` as 'h2' | 'h3';
+---
+
+<ul class="grid card-list" role="list" style={`--cols: ${columns}`}>
+	{cards.map((c) => (
+		<li class="card card--link">
+			<H class="title"><a href={c.href}><Txt text={c.title} /></a></H>
+			<p><Txt text={c.text} /></p>
+			<span class="arrow" aria-hidden="true">→</span>
+		</li>
+	))}
+</ul>
+
+<style>
+	.grid {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
+		gap: 1.25rem;
+	}
+	.card { position: relative; display: flex; flex-direction: column; }
+	.title { font-size: 1.15rem; margin-bottom: 0.5rem; }
+	.title a { color: var(--primary-dark); }
+	/* Stretch the link over the whole card. */
+	.title a::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+	.title a:focus-visible { outline: none; }
+	.card:focus-within { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
+	p { color: var(--fg-2); font-size: 0.92rem; margin-bottom: 1rem; }
+	.arrow { margin-top: auto; color: var(--primary); font-weight: 600; }
+	@media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+	@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+</style>

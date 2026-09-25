@@ -1,0 +1,27 @@
+---
+/** Cream sidebar card (conference "Upplýsingar", "Fyrri ráðstefnur" …). */
+interface Props {
+	title: string;
+}
+const { title } = Astro.props;
+---
+
+<section class="info-card">
+	<h2>{title}</h2>
+	<slot />
+</section>
+
+<style>
+	.info-card {
+		background: var(--bg-2);
+		border-radius: var(--efnis-radius-lg);
+		padding: 1.5rem;
+	}
+	.info-card + :global(.info-card) { margin-top: 1.5rem; }
+	h2 { font-size: 1.05rem; margin-bottom: 0.75rem; }
+	.info-card :global(dl) { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0.4rem 0.75rem; font-size: 0.9rem; }
+	.info-card :global(dt) { font-weight: 600; color: var(--fg-1); }
+	.info-card :global(dd) { color: var(--fg-2); }
+	.info-card :global(ul) { list-style: none; margin: 0; padding: 0; font-size: 0.9rem; }
+	.info-card :global(.btn) { margin-top: 1rem; width: 100%; }
+</style>

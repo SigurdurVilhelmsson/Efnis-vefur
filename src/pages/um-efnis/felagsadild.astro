@@ -1,0 +1,12 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Todo from '../../components/Todo.astro';
+import { site } from '../../data/site';
+import { formatNumber } from '../../lib/format';
+---
+
+<PageLayout lang="is" title="Félagsaðild" crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Um Efnís', href: '/um-efnis/' }, { label: 'Félagsaðild' }]}>
+	<Todo what="texti um félagsaðild (byggður á 3. grein laganna, settur inn í 2. áfanga)" />
+	<p>Árgjald: {formatNumber(site.membershipFee, 'is')} kr.</p>
+	<p><a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a></p>
+</PageLayout>

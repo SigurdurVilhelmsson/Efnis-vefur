@@ -1,0 +1,25 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Todo from '../../components/Todo.astro';
+import Txt from '../../components/Txt.astro';
+import { events } from '../../data/placeholder';
+import { formatDateTime } from '../../lib/format';
+import { t } from '../../lib/i18n';
+
+export function getStaticPaths() {
+	return events.map((event) => ({ params: { slug: event.slug }, props: { event } }));
+}
+
+const { event } = Astro.props;
+---
+
+<PageLayout
+	lang="is"
+	title={event.title}
+	meta={formatDateTime(event.start, 'is')}
+	crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Viðburðir', href: '/vidburdir/' }]}
+>
+	<p><strong><Txt text={event.place} /></strong></p>
+	<Todo what="lýsing á viðburði (úr vidburdir-safninu í 2. áfanga)" />
+	{event.registrationUrl && <p><a class="btn btn--accent" href={event.registrationUrl}>{t('is').register}</a></p>}
+</PageLayout>

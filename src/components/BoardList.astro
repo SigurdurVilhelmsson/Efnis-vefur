@@ -1,0 +1,26 @@
+---
+/** Board members (stjorn collection), sorted by `order`. */
+import Txt from './Txt.astro';
+
+interface Props {
+	members: { name: string; role: string; order: number }[];
+}
+const members = [...Astro.props.members].sort((a, b) => a.order - b.order);
+---
+
+<dl class="board">
+	{members.map((m) => (
+		<div class="row">
+			<dt><Txt text={m.role} /></dt>
+			<dd><Txt text={m.name} /></dd>
+		</div>
+	))}
+</dl>
+
+<style>
+	.board { margin: 0; }
+	.row { display: grid; grid-template-columns: 10rem 1fr; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border-soft); }
+	dt { font-weight: 600; color: var(--primary-dark); }
+	dd { margin: 0; }
+	@media (max-width: 480px) { .row { grid-template-columns: 1fr; gap: 0.1rem; } }
+</style>
