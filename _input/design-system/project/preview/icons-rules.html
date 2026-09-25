@@ -1,0 +1,18 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Brand — Iconography (rules)" subtitle="All 15 Þumalputtaregla icons" viewport="700x280" --><html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css"></head><body>
+<div class="label-eyebrow">Iconography — rule set (15)</div>
+<div id="grid" style="display:grid;grid-template-columns:repeat(8,1fr);gap:10px;color:#0f4a3e"></div>
+<div class="note">Approved April 2026 · same constraints as category set · one icon per Þumalputtaregla.</div>
+<script>
+const ids = ['rule-01-natturulegt','rule-02-skammtur','rule-03-enumera','rule-04-thungmalmur','rule-05-geislun','rule-06-co2','rule-07-lifraent','rule-08-jardhitavatn','rule-09-klor','rule-10-efnavorur','rule-11-ph','rule-12-surtregn','rule-13-vetni','rule-14-aburdur','rule-15-albraeddsla'];
+const g = document.getElementById('grid');
+ids.forEach(id=>{
+  fetch('../assets/icons/'+id+'.svg').then(r=>r.text()).then(svg=>{
+    const c = document.createElement('div');
+    c.style.cssText='aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #e3ddd0;border-radius:6px';
+    c.innerHTML = svg.replace('<svg ','<svg width="32" height="32" ');
+    g.appendChild(c);
+  });
+});
+</script>
+</body></html>

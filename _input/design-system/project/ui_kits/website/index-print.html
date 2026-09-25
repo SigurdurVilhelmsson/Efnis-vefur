@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="is">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Efnís — UI kit (print)</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  html, body { background: #fbfbf9; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { margin: 0; }
+
+  /* Page-break container for each page in the print stack. */
+  .print-page { break-before: page; }
+  .print-page:first-of-type { break-before: auto; }
+
+  /* In print, dissolve the rules carousel from horizontal-scroll into a grid
+     so all 15 cards are visible across one or two printed pages. */
+  @media print {
+    .rules-track {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 1rem !important;
+      overflow: visible !important;
+      scroll-snap-type: none !important;
+    }
+    .rules-track > div {
+      flex: none !important;
+      break-inside: avoid;
+    }
+    /* Prevent awkward in-card splits across paged content. */
+    section, article, .info-card, blockquote, .schedule-item, .post-list li {
+      break-inside: avoid;
+    }
+    h1, h2, h3 { break-after: avoid; }
+    /* Page-tabs nav and any sticky/fixed chrome — hide in print. */
+    .page-tabs, [data-print="hide"] { display: none !important; }
+    /* Sticky header doesn't make sense in print; drop sticky behaviour. */
+    nav[data-site-nav] { position: static !important; backdrop-filter: none !important; background: #fbfbf9 !important; }
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 0.4in;
+  }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="Primitives.jsx"></script>
+<script type="text/babel" src="SiteHeader.jsx"></script>
+<script type="text/babel" src="HeroBand.jsx"></script>
+<script type="text/babel" src="RulesCarousel.jsx"></script>
+<script type="text/babel" src="CategoryColumns.jsx"></script>
+<script type="text/babel" src="Footer.jsx"></script>
+<script type="text/babel" src="Pages.jsx"></script>
+
+<script type="text/babel">
+const { useEffect } = React;
+
+function PrintHome() {
+  return (
+    <>
+      <HeroBand />
+      <RulesCarousel />
+      <CategoryColumns />
+      <CtaBand />
+    </>
+  );
+}
+
+function PrintApp() {
+  // Mark the rules track for the print CSS to find. Run once after mount.
+  useEffect(() => {
+    document.querySelectorAll('section').forEach(s => {
+      const track = s.querySelector(':scope > div > div[style*="scrollSnapType"], :scope > div > div[style*="scroll-snap"]');
+      if (track) track.classList.add('rules-track');
+    });
+    // Also tag by looking for the carousel-shaped flex children
+    document.querySelectorAll('div').forEach(d => {
+      const inline = d.getAttribute('style') || '';
+      if (inline.includes('scroll-snap-type: x mandatory') ||
+          inline.includes('scrollSnapType') ||
+          (inline.includes('overflowX') && inline.includes('flex'))) {
+        d.classList.add('rules-track');
+      }
+    });
+    // Tag the site nav for print CSS
+    const nav = document.querySelector('nav');
+    if (nav) nav.setAttribute('data-site-nav', '');
+  }, []);
+
+  return (
+    <>
+      <SiteHeader current="home" />
+      <div className="print-page"><PrintHome /></div>
+      <div className="print-page"><RulesPage /></div>
+      <div className="print-page"><ConferencePage /></div>
+      <div className="print-page"><ArticlePage /></div>
+      <SiteFooter />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<PrintApp />);
+
+// Auto-print once everything is loaded.
+(async () => {
+  try { await document.fonts.ready; } catch (e) {}
+  // Wait for image loads (logo SVGs are inline but the brand-logo preview pulls externals — none here, but be safe)
+  await new Promise(r => setTimeout(r, 800));
+  window.print();
+})();
+</script>
+
+</body>
+</html>

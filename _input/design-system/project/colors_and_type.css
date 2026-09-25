@@ -1,0 +1,314 @@
+/*
+ * Efnafræðifélag Íslands — Colors & Type
+ * ---------------------------------------
+ * Forest-teal & Amber + Basalt palette, adopted May 2026.
+ *
+ * Anchored to the carbonate-ion logo (Iceland spar / Carbfix story).
+ * Supersedes the April-2026 Indígó & Kopar attempt — the carbonate
+ * mark is the primary identity anchor; everything else aligns to it.
+ *
+ * Type pairing: Source Serif 4 (display) + DM Sans (body).
+ * Both self-hosted from assets/fonts/ (SIL OFL — see assets/fonts/README.md).
+ * Both carry full Icelandic glyph coverage (ð, þ, æ, á, í, ó, ú, ý, ö, é).
+ */
+
+/* ── FONTS ────────────────────────────────────────────────
+   Self-hosted woff2 files, sourced from Fontsource (originally
+   Google Fonts, SIL OFL licensed). Latin covers Icelandic;
+   latin-ext is included for completeness so Central-European
+   names render correctly too. */
+
+/* Source Serif 4 — 400 */
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal; font-weight: 400; font-display: swap;
+  src: url('assets/fonts/sourceserif4-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal; font-weight: 400; font-display: swap;
+  src: url('assets/fonts/sourceserif4-400-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Source Serif 4 — 500 */
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal; font-weight: 500; font-display: swap;
+  src: url('assets/fonts/sourceserif4-500-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal; font-weight: 500; font-display: swap;
+  src: url('assets/fonts/sourceserif4-500-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Source Serif 4 — 600 */
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal; font-weight: 600; font-display: swap;
+  src: url('assets/fonts/sourceserif4-600-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal; font-weight: 600; font-display: swap;
+  src: url('assets/fonts/sourceserif4-600-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Source Serif 4 — 700 */
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal; font-weight: 700; font-display: swap;
+  src: url('assets/fonts/sourceserif4-700-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal; font-weight: 700; font-display: swap;
+  src: url('assets/fonts/sourceserif4-700-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* DM Sans — 400 */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal; font-weight: 400; font-display: swap;
+  src: url('assets/fonts/dmsans-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal; font-weight: 400; font-display: swap;
+  src: url('assets/fonts/dmsans-400-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* DM Sans — 500 */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal; font-weight: 500; font-display: swap;
+  src: url('assets/fonts/dmsans-500-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal; font-weight: 500; font-display: swap;
+  src: url('assets/fonts/dmsans-500-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* DM Sans — 600 */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal; font-weight: 600; font-display: swap;
+  src: url('assets/fonts/dmsans-600-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal; font-weight: 600; font-display: swap;
+  src: url('assets/fonts/dmsans-600-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* DM Sans — 700 */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal; font-weight: 700; font-display: swap;
+  src: url('assets/fonts/dmsans-700-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal; font-weight: 700; font-display: swap;
+  src: url('assets/fonts/dmsans-700-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  /* ── COLOR — Teal (primary) ─────────────────────────────── */
+  --efnis-teal:        #1a6b5a;  /* forest-teal — geothermal water, calcite-spar */
+  --efnis-teal-dark:   #0f4a3e;  /* deepest teal — bonds in the mark, dark CTAs */
+  --efnis-teal-soft:   #9ccabf;  /* photo overlays, subtle illustration tints */
+  --efnis-teal-50:     #e6f2ef;  /* tint — pill bg, icon-box bg, hover */
+  --efnis-teal-100:    #c4dfd6;  /* light fills, scrollbar, dividers on dark */
+
+  /* ── COLOR — Amber (accent — sparing) ───────────────────── */
+  --efnis-amber:       #d4872e;  /* carbonate centre — accent, never bg */
+  --efnis-amber-dark:  #b06f1f;  /* hover, pill text */
+  --efnis-amber-50:    #f9ecd9;  /* pill bg, blockquote bg */
+
+  /* ── COLOR — Neutrals ───────────────────────────────────── */
+  --efnis-basalt:      #1c2a26;  /* near-black, very slight teal undertone */
+                                  /* footer, dark CTA bands, body ink */
+  --efnis-bg:          #fbfbf9;  /* warm off-white — page background */
+  --efnis-cream:       #f3efe6;  /* warmer cream — section bg, info-card */
+  --efnis-cream-dark:  #e3ddd0;  /* borders, dividers */
+  --efnis-ink:         #1c2a26;  /* basalt as body ink */
+  --efnis-ink-muted:   #5a6b66;  /* secondary text, article body */
+  --efnis-ink-subtle:  #8a9b96;  /* meta, dates, hints */
+
+  /* ── COLOR — Aliases (semantic) ─────────────────────────── */
+  --fg-1:              var(--efnis-ink);
+  --fg-2:              var(--efnis-ink-muted);
+  --fg-3:              var(--efnis-ink-subtle);
+  --fg-on-dark:        var(--efnis-cream);
+  --bg-1:              var(--efnis-bg);
+  --bg-2:              var(--efnis-cream);
+  --bg-3:              var(--efnis-cream-dark);
+  --bg-card:           #ffffff;        /* cards are pure white over warm bg */
+  --bg-deep:           var(--efnis-basalt);
+  --primary:           var(--efnis-teal);
+  --primary-dark:      var(--efnis-teal-dark);
+  --primary-tint:      var(--efnis-teal-50);
+  --accent:            var(--efnis-amber);
+  --accent-dark:       var(--efnis-amber-dark);
+  --accent-tint:       var(--efnis-amber-50);
+  --border-soft:       var(--efnis-cream-dark);
+  --link:              var(--efnis-teal);
+  --link-hover:        var(--efnis-teal-dark);
+
+  /* ── GRADIENTS ──────────────────────────────────────────── */
+  --efnis-gradient-warm:  linear-gradient(135deg, #fbfbf9 0%, #e6f2ef 100%);  /* hero, rules backdrop */
+  --efnis-gradient-hero:  linear-gradient(160deg, #1a6b5a 0%, #0f4a3e 100%);  /* dark hero / CTA bands */
+  --efnis-gradient-amber: linear-gradient(135deg, #f9ecd9 0%, #f3efe6 100%);  /* secondary section */
+  --efnis-gradient-deep:  linear-gradient(160deg, #1c2a26 0%, #0f4a3e 100%);  /* footer, deep panel */
+
+  /* ── TYPE — Families ────────────────────────────────────── */
+  --font-serif: 'Source Serif 4', 'Source Serif Pro', Georgia, 'Times New Roman', serif;
+  --font-sans:  'DM Sans', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-mono:  ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* ── TYPE — Scale ───────────────────────────────────────── */
+  --text-xs:   0.75rem;   /* 12px — pill, micro meta */
+  --text-sm:   0.85rem;   /* 13.6px — captions, post-list */
+  --text-base: 1rem;      /* 16px — body */
+  --text-md:   1.1rem;    /* 17.6px — lead, hero subtitle */
+  --text-lg:   1.25rem;   /* 20px — small heading */
+  --text-xl:   1.5rem;    /* 24px — H3 / section title */
+  --text-2xl:  1.75rem;   /* 28px — H2 */
+  --text-3xl:  2.25rem;   /* 36px — page title */
+  --text-4xl:  3rem;      /* 48px — hero (clamps down on mobile) */
+
+  /* ── SPACING ────────────────────────────────────────────── */
+  --efnis-space-xs:  0.5rem;
+  --efnis-space-sm:  0.75rem;
+  --efnis-space-md:  1.25rem;
+  --efnis-space-lg:  2rem;
+  --efnis-space-xl:  3rem;
+  --efnis-space-2xl: 4.5rem;
+
+  /* ── RADII ──────────────────────────────────────────────── */
+  --efnis-radius-sm:    4px;
+  --efnis-radius-md:    6px;
+  --efnis-radius-lg:    12px;
+  --efnis-radius-pill:  99px;
+
+  /* ── SHADOW ─────────────────────────────────────────────── */
+  /* All shadows tinted with basalt (rgba 28,42,38) for cohesion
+     with the dark neutral — no pure-black shadows. */
+  --efnis-shadow-sm:  0 1px 2px rgba(28,42,38,.05), 0 2px 6px rgba(28,42,38,.04);
+  --efnis-shadow-md:  0 1px 3px rgba(28,42,38,.05), 0 4px 12px rgba(28,42,38,.06);
+  --efnis-shadow-lg:  0 2px 6px rgba(28,42,38,.06), 0 8px 24px rgba(28,42,38,.08);
+
+  /* ── MOTION ─────────────────────────────────────────────── */
+  --ease-out:        cubic-bezier(.2, .7, .2, 1);
+  --duration-fast:   150ms;
+  --duration-base:   200ms;
+}
+
+/* ── SEMANTIC ELEMENT STYLES ──────────────────────────────── */
+
+html { font-size: 16px; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.65;
+  color: var(--fg-1);
+  background: var(--bg-1);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-serif);
+  color: var(--primary-dark);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  font-weight: 700;
+  margin: 0 0 0.5em;
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(2rem, 4vw, var(--text-4xl)); line-height: 1.15; }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); font-weight: 600; }
+h5 { font-size: var(--text-base); font-weight: 600; }
+
+p { margin: 0 0 1em; text-wrap: pretty; }
+p.lead { font-size: var(--text-md); color: var(--fg-2); max-width: 60ch; }
+
+a { color: var(--link); text-decoration: none; transition: color var(--duration-fast) var(--ease-out); }
+a:hover { color: var(--link-hover); }
+
+small, .text-meta { font-size: var(--text-sm); color: var(--fg-3); }
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  background: var(--bg-2);
+  padding: 0.1em 0.35em;
+  border-radius: var(--efnis-radius-sm);
+}
+
+::selection { background: var(--primary-tint); color: var(--primary-dark); }
+
+/* ── HELPER CLASSES (mirror the Kadence Customizer set) ──── */
+.efnis-bg-warm    { background: var(--efnis-gradient-warm); }
+.efnis-bg-hero    { background: var(--efnis-gradient-hero); color: var(--fg-on-dark); }
+.efnis-bg-amber   { background: var(--efnis-gradient-amber); }
+.efnis-bg-deep    { background: var(--efnis-gradient-deep); color: var(--fg-on-dark); }
+.efnis-bg-basalt  { background: var(--efnis-basalt); color: var(--fg-on-dark); }
+.efnis-bg-cream   { background: var(--bg-2); }
+.efnis-bg-teal    { background: var(--primary); color: #fff; }
+.efnis-bg-teal-50 { background: var(--primary-tint); }
+
+.efnis-text-teal      { color: var(--primary); }
+.efnis-text-teal-dark { color: var(--primary-dark); }
+.efnis-text-amber     { color: var(--accent); }
+.efnis-text-basalt    { color: var(--efnis-basalt); }
+.efnis-text-muted     { color: var(--fg-2); }
+
+.efnis-rule       { border-top: 3px solid var(--primary); }
+.efnis-rule-amber { border-top: 3px solid var(--accent); }
+.efnis-rule-teal  { border-top: 3px solid var(--primary); }
+
+.efnis-pill {
+  display: inline-block;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--efnis-radius-pill);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: var(--primary-tint);
+  color: var(--primary-dark);
+}
+.efnis-pill-amber { background: var(--accent-tint); color: var(--accent-dark); }
+
+/* ── BIREFRINGENCE GHOST (optional wordmark optics device) ─
+   Use sparingly — too much reads as a misprint. */
+.efnis-birefringence {
+  position: relative;
+  display: inline-block;
+  color: var(--primary-dark);
+}
+.efnis-birefringence::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: var(--accent);
+  transform: translate(2px, 1px);
+  opacity: 0.55;
+  z-index: -1;
+}

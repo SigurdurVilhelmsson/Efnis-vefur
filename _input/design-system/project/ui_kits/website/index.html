@@ -1,0 +1,87 @@
+<!doctype html>
+<!-- @dsCard group="UI Kit — Website" name="UI kit — Efnís website" subtitle="Re-skinned for carbonate-teal palette + real logo" viewport="1280x900" -->
+<html lang="is">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Efnís UI kit — efn.is</title>
+<link rel="stylesheet" href="../../colors_and_type.css">
+<style>
+  body { padding-bottom: 64px; }
+  .page-tabs {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+    background: #0f4a3e; display: flex;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.15);
+  }
+  .page-tab {
+    flex: 1; padding: 0.85rem 1rem; text-align: center;
+    color: rgba(255,255,255,0.55); font-size: 0.8rem; font-weight: 600;
+    cursor: pointer; transition: all .15s; border: none; background: none;
+    border-top: 2px solid transparent; font-family: inherit;
+  }
+  .page-tab.active { color: #fff; border-top-color: #d4872e; background: rgba(255,255,255,0.05); }
+  .page-tab small { display: block; font-size: 0.68rem; font-weight: 400; opacity: .7; margin-top: 2px; }
+</style>
+</head>
+<body data-screen-label="Efnís website kit">
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="Primitives.jsx"></script>
+<script type="text/babel" src="SiteHeader.jsx"></script>
+<script type="text/babel" src="HeroBand.jsx"></script>
+<script type="text/babel" src="RulesCarousel.jsx"></script>
+<script type="text/babel" src="CategoryColumns.jsx"></script>
+<script type="text/babel" src="Footer.jsx"></script>
+<script type="text/babel" src="Pages.jsx"></script>
+
+<script type="text/babel">
+const { useState } = React;
+
+function HomePage({ onNav }) {
+  return (
+    <>
+      <HeroBand onCta={() => onNav('rules')} />
+      <RulesCarousel />
+      <CategoryColumns />
+      <CtaBand />
+    </>
+  );
+}
+
+function App() {
+  const [page, setPage] = useState('home');
+  return (
+    <div data-screen-label={'Efnís ' + page}>
+      <SiteHeader current={page} onNav={setPage} />
+      {page === 'home'  && <HomePage onNav={setPage} />}
+      {page === 'rules' && <RulesPage />}
+      {page === 'conf'  && <ConferencePage />}
+      {page === 'news'  && <ArticlePage />}
+      <SiteFooter onNav={setPage} />
+      <div className="page-tabs">
+        {[
+          ['home',  'Forsíða',         'Hero · carousel · 3-cols'],
+          ['rules', 'Þumalputtareglur', 'Long-form 15 rules'],
+          ['conf',  'Ráðstefnusíða',    'Schedule · sidebar'],
+          ['news',  'Fréttasíða',       'Article layout'],
+        ].map(([id, label, sub]) => (
+          <button key={id}
+                  className={'page-tab' + (page === id ? ' active' : '')}
+                  onClick={() => setPage(id)}>
+            {label}<small>{sub}</small>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
