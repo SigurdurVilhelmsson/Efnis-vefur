@@ -1,0 +1,64 @@
+---
+/** Homepage hero (HeroBand.jsx): teal gradient, one decorative ring. */
+interface Props {
+	eyebrow?: string;
+	title: string;
+	tagline?: string;
+}
+const { eyebrow, title, tagline } = Astro.props;
+---
+
+<section class="hero on-dark" aria-labelledby="hero-title">
+	<div class="ring" aria-hidden="true"></div>
+	<div class="container content">
+		{eyebrow && eyebrow !== title && <p class="eyebrow">{eyebrow}</p>}
+		<h1 id="hero-title">{title}</h1>
+		{tagline && <p class="tagline">{tagline}</p>}
+		<div class="intro"><slot /></div>
+		<div class="actions"><slot name="actions" /></div>
+	</div>
+</section>
+
+<style>
+	.hero {
+		position: relative;
+		overflow: hidden;
+		background: var(--efnis-gradient-hero);
+		color: #fff;
+		padding: clamp(3rem, 8vw, 5rem) 0 clamp(3rem, 7vw, 4.5rem);
+	}
+	/* The only decorative geometry the design system allows. */
+	.ring {
+		position: absolute;
+		top: -60px;
+		right: -80px;
+		width: 400px;
+		height: 400px;
+		border-radius: 50%;
+		border: 40px solid rgba(255, 255, 255, 0.04);
+		pointer-events: none;
+	}
+	.content { position: relative; z-index: 1; }
+	.eyebrow {
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.85);
+		margin-bottom: 1rem;
+	}
+	h1 { color: #fff; max-width: 22ch; margin-bottom: 0.75rem; }
+	.tagline {
+		font-family: var(--font-serif);
+		font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+		font-weight: 500;
+		line-height: 1.35;
+		max-width: 36ch;
+		margin-bottom: 1.25rem;
+	}
+	/* Contrast: ≥ 85% white on the teal gradient (≥ 5.1:1). */
+	.intro { font-size: var(--text-md); color: rgba(255, 255, 255, 0.9); max-width: 62ch; line-height: 1.6; }
+	.intro :global(p) { margin-bottom: 0; }
+	.actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+	.actions:empty { display: none; }
+</style>

@@ -1,0 +1,32 @@
+---
+/**
+ * The carbonate-ion mark (design system: assets/logo/). Two of the four
+ * approved variants: primary (light backgrounds) and reversed (dark).
+ * Colours are fixed by the brand; never recolour.
+ * Decorative here because the wordmark next to it carries the name.
+ */
+interface Props {
+	size?: number;
+	reversed?: boolean;
+}
+const { size = 36, reversed = false } = Astro.props;
+const bond = reversed ? '#f3efe6' : '#0f4a3e';
+const node = reversed ? '#f3efe6' : '#1a6b5a';
+---
+
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 124 128"
+	width={Math.round((size * 124) / 128)}
+	height={size}
+	aria-hidden="true"
+	focusable="false"
+>
+	<line x1="62" y1="64" x2="62" y2="22" stroke={bond} stroke-width="6" stroke-linecap="round"></line>
+	<line x1="62" y1="64" x2="98.37" y2="85" stroke={bond} stroke-width="6" stroke-linecap="round"></line>
+	<line x1="62" y1="64" x2="25.63" y2="85" stroke={bond} stroke-width="6" stroke-linecap="round"></line>
+	<circle cx="62" cy="22" r="12" fill={node}></circle>
+	<circle cx="98.37" cy="85" r="12" fill={node}></circle>
+	<circle cx="25.63" cy="85" r="12" fill={node}></circle>
+	<circle cx="62" cy="64" r="14" fill="#d4872e"></circle>
+</svg>

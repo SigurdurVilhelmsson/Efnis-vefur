@@ -1,0 +1,44 @@
+---
+/**
+ * Inline SVG icon from src/icons/ (the Efnís icon set: 24×24, stroke 1.5,
+ * currentColor). Inlined, never <img>, so it takes the text colour.
+ * Decorative by default; pass `label` when the icon carries meaning alone.
+ */
+interface Props {
+	name: string;
+	size?: number;
+	label?: string;
+	class?: string;
+}
+
+const { name, size = 24, label, class: className } = Astro.props;
+
+const icons = import.meta.glob<string>('../icons/*.svg', { query: '?raw', import: 'default', eager: true });
+const raw = icons[`../icons/${name}.svg`];
+if (!raw) throw new Error(`Icon "${name}" not found in src/icons/`);
+
+// Keep only the drawing; the outer <svg> is rebuilt below.
+const inner = raw
+	.replace(/^[\s\S]*?<svg[^>]*>/, '')
+	.replace(/<\/svg>\s*$/, '')
+	.replace(/<title>[\s\S]*?<\/title>/, '')
+	.trim();
+---
+
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 24 24"
+	width={size}
+	height={size}
+	fill="none"
+	stroke="currentColor"
+	stroke-width="1.5"
+	stroke-linecap="round"
+	stroke-linejoin="round"
+	class={className}
+	aria-hidden={label ? undefined : 'true'}
+	role={label ? 'img' : undefined}
+	aria-label={label}
+	focusable="false"
+	set:html={inner}
+/>

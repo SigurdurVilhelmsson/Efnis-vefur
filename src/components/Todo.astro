@@ -1,0 +1,10 @@
+---
+/** A block-level TODO(texti) placeholder for missing Icelandic copy. */
+interface Props {
+	/** What's missing, in a few words, e.g. "lýsing á Menntun". */
+	what: string;
+}
+const { what } = Astro.props;
+---
+
+<p><span class="todo">TODO(texti): {what}</span></p>

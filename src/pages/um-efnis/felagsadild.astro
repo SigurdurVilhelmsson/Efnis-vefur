@@ -1,0 +1,17 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Sections from '../../components/Sections.astro';
+import { aboutIs } from '../../data/about';
+
+// Same text as "Félagsaðild" on /um-efnis/, without the heading and the
+// link back to this page; plus a link to the bylaws (3. grein).
+const membership = aboutIs.sections.find((s) => s.id === 'felagsadild')!;
+const section = {
+	paragraphs: membership.paragraphs,
+	links: [{ label: 'Lög félagsins', href: '/um-efnis/log/' }],
+};
+---
+
+<PageLayout lang="is" title="Félagsaðild" crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Um Efnís', href: '/um-efnis/' }, { label: 'Félagsaðild' }]}>
+	<Sections sections={[section]} />
+</PageLayout>

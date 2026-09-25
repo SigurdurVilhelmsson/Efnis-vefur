@@ -1,0 +1,41 @@
+---
+/** One event: date/time, title, place, optional registration link. */
+import Txt from './Txt.astro';
+import { formatDateTime } from '../lib/format';
+import { t, type Lang } from '../lib/i18n';
+
+interface Props {
+	lang: Lang;
+	title: string;
+	start: Date;
+	place: string;
+	href?: string;
+	registrationUrl?: string;
+	headingLevel?: 2 | 3;
+}
+const { lang, title, start, place, href, registrationUrl, headingLevel = 3 } = Astro.props;
+const H = `h${headingLevel}` as 'h2' | 'h3';
+const s = t(lang);
+---
+
+<article class="event">
+	<p class="when"><time datetime={start.toISOString()}>{formatDateTime(start, lang)}</time></p>
+	<H class="title">{href ? <a href={href}><Txt text={title} /></a> : <Txt text={title} />}</H>
+	<p class="where"><Txt text={place} /></p>
+	{registrationUrl && <a class="btn btn--accent" href={registrationUrl}>{s.register}</a>}
+</article>
+
+<style>
+	.event {
+		background: var(--bg-card);
+		border-radius: var(--efnis-radius-md);
+		border-left: 3px solid var(--accent);
+		box-shadow: var(--efnis-shadow-md);
+		padding: 1.5rem;
+	}
+	/* Contrast: dates in ink-muted; amber stays on the border only. */
+	.when { font-weight: 600; color: var(--fg-2); font-size: 0.9rem; margin-bottom: 0.35rem; }
+	.title { font-size: 1.3rem; margin-bottom: 0.25rem; }
+	.where { color: var(--fg-2); margin-bottom: 1rem; }
+	.where:last-child { margin-bottom: 0; }
+</style>

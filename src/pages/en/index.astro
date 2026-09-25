@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroBand from '../../components/HeroBand.astro';
+import Sections from '../../components/Sections.astro';
+import { homepageEn } from '../../data/homepage';
+
+const [intro, ...sections] = homepageEn.sections;
+---
+
+<BaseLayout lang="en" description="The Icelandic Chemical Society (Efnís), founded in 1999." translation="/">
+	<HeroBand title={homepageEn.title}>
+		{intro.paragraphs?.map((p) => <p>{p}</p>)}
+	</HeroBand>
+	<div class="container container--narrow section prose">
+		<Sections sections={sections} />
+	</div>
+</BaseLayout>

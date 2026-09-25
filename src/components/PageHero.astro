@@ -1,0 +1,51 @@
+---
+/** Subpage hero (Pages.jsx → PageHero) with breadcrumbs, title and meta line. */
+import Txt from './Txt.astro';
+import { t, type Lang } from '../lib/i18n';
+
+export interface Crumb {
+	label: string;
+	href?: string;
+}
+interface Props {
+	lang: Lang;
+	title: string;
+	crumbs?: Crumb[];
+	meta?: string;
+}
+const { lang, title, crumbs = [], meta } = Astro.props;
+const s = t(lang);
+---
+
+<section class="page-hero on-dark">
+	<div class="container">
+		{crumbs.length > 0 && (
+			<nav aria-label={s.breadcrumbs}>
+				<ol>
+					{crumbs.map((c) => (
+						<li>{c.href ? <a href={c.href}><Txt text={c.label} /></a> : <span aria-current="page"><Txt text={c.label} /></span>}</li>
+					))}
+				</ol>
+			</nav>
+		)}
+		<h1><Txt text={title} /></h1>
+		{meta && <p class="meta"><Txt text={meta} /></p>}
+		<slot />
+	</div>
+</section>
+
+<style>
+	.page-hero {
+		background: var(--efnis-gradient-hero);
+		color: #fff;
+		padding: clamp(2.5rem, 6vw, 3.5rem) 0 clamp(2rem, 5vw, 3rem);
+	}
+	ol { list-style: none; margin: 0 0 1rem; padding: 0; display: flex; flex-wrap: wrap; font-size: 0.85rem; }
+	li + li::before { content: '/'; margin: 0 0.5rem; color: rgba(255, 255, 255, 0.7); }
+	/* Contrast: ≥ 85% white on teal. */
+	a, span { color: rgba(255, 255, 255, 0.9); }
+	a { text-decoration: underline; text-underline-offset: 0.2em; text-decoration-color: rgba(255, 255, 255, 0.4); }
+	a:hover { color: #fff; }
+	h1 { color: #fff; font-size: clamp(1.9rem, 4vw, var(--text-3xl)); margin-bottom: 0.5rem; }
+	.meta { color: rgba(255, 255, 255, 0.9); margin: 0; font-size: 0.95rem; }
+</style>

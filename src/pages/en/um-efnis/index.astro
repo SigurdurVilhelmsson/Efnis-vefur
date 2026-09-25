@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import Sections from '../../../components/Sections.astro';
+import { aboutEn } from '../../../data/about';
+---
+
+<BaseLayout lang="en" title="About" description={aboutEn.intro} translation="/um-efnis/">
+	<PageHero lang="en" title={aboutEn.title} crumbs={[{ label: 'Home', href: '/en/' }, { label: 'About' }]} />
+	<div class="container container--narrow section prose">
+		<p class="lead">{aboutEn.intro}</p>
+		<Sections sections={aboutEn.sections} />
+	</div>
+</BaseLayout>

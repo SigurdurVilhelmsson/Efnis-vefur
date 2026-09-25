@@ -1,0 +1,25 @@
+---
+/** Text pages: page hero + a 720px article column with prose styling. */
+import BaseLayout from './BaseLayout.astro';
+import PageHero, { type Crumb } from '../components/PageHero.astro';
+import type { Lang } from '../lib/i18n';
+
+interface Props {
+	lang: Lang;
+	title: string;
+	crumbs?: Crumb[];
+	meta?: string;
+	description?: string;
+	translation?: string;
+}
+const { lang, title, crumbs, meta, description, translation } = Astro.props;
+---
+
+<BaseLayout lang={lang} title={title} description={description} translation={translation}>
+	<PageHero lang={lang} title={title} crumbs={crumbs} meta={meta} />
+	<div class="container container--narrow section">
+		<div class="prose">
+			<slot />
+		</div>
+	</div>
+</BaseLayout>

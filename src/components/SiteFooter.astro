@@ -1,0 +1,104 @@
+---
+/**
+ * Site footer (Footer.jsx → SiteFooter), reduced to what the brief asks for:
+ * contact email and links to lög, stjórn and English, plus the main nav.
+ */
+import EfnisMark from './EfnisMark.astro';
+import { mainNav, t, type Lang } from '../lib/i18n';
+import { site } from '../data/site';
+
+interface Props {
+	lang: Lang;
+}
+const { lang } = Astro.props;
+const s = t(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer on-dark">
+	<div class="container grid">
+		<div class="about">
+			<p class="brand">
+				<EfnisMark size={32} reversed />
+				<span lang="is">{t('is').siteName}</span>
+			</p>
+			<p>{lang === 'is' ? 'Reykjavík · stofnað 1999' : 'Reykjavík · founded 1999'}</p>
+			<p>
+				<span class="visually-hidden">{s.contact}: </span>
+				<a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+			</p>
+			<p class="emblem">
+				{site.emblemTeaser[lang]}{' '}
+				<a href={lang === 'is' ? '/um-efnis/#merki' : '/en/um-efnis/#emblem'}>{s.emblemMore} →</a>
+			</p>
+		</div>
+
+		{mainNav[lang].length > 0 && (
+			<nav aria-labelledby="footer-quick">
+				<h2 id="footer-quick">{s.footerQuickLinks}</h2>
+				<ul>
+					{mainNav[lang].map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+				</ul>
+			</nav>
+		)}
+
+		<nav aria-labelledby="footer-about">
+			<h2 id="footer-about">{s.footerAbout}</h2>
+			<ul>
+				<li><a href="/um-efnis/log/" hreflang="is">{s.bylaws}</a></li>
+				<li><a href="/um-efnis/stjorn/" hreflang="is">{s.board}</a></li>
+				{lang === 'is'
+					? <li><a href="/en/" lang="en" hreflang="en">English</a></li>
+					: <li><a href="/" lang="is" hreflang="is">Íslenska</a></li>}
+			</ul>
+		</nav>
+	</div>
+	<div class="container bottom">
+		<span>© {year} {t('is').siteName}</span>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		background: var(--efnis-basalt);
+		/* Contrast: ≥ 85% cream on basalt (9.7:1). */
+		color: rgba(243, 239, 230, 0.85);
+		padding: 3rem 0 2rem;
+		font-size: 0.9rem;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: 2fr 1fr 1fr;
+		gap: 2rem;
+	}
+	.brand {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		font-family: var(--font-serif);
+		font-weight: 700;
+		font-size: 1.05rem;
+		color: #fff;
+		margin-bottom: 0.75rem;
+	}
+	.about p:not(.brand) { max-width: 44ch; margin-bottom: 0.5rem; }
+	.emblem { margin-top: 1rem; font-size: 0.85rem; }
+	.emblem a { white-space: nowrap; }
+	h2 {
+		color: #fff;
+		font-size: 0.95rem;
+		margin: 0 0 0.75rem;
+	}
+	ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+	a { color: rgba(243, 239, 230, 0.85); }
+	a:hover { color: #fff; }
+	.bottom {
+		margin-top: 2rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+		font-size: 0.8rem;
+	}
+	@media (max-width: 768px) {
+		.grid { grid-template-columns: 1fr; }
+	}
+</style>

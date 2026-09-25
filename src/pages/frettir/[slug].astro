@@ -1,0 +1,21 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Todo from '../../components/Todo.astro';
+import { news } from '../../data/placeholder';
+import { formatDate } from '../../lib/format';
+
+export function getStaticPaths() {
+	return news.map((item) => ({ params: { slug: item.slug }, props: { item } }));
+}
+
+const { item } = Astro.props;
+---
+
+<PageLayout
+	lang="is"
+	title={item.title}
+	meta={formatDate(item.date, 'is')}
+	crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Fréttir', href: '/frettir/' }]}
+>
+	<Todo what="meginmál fréttar (úr frettir-safninu í 2. áfanga)" />
+</PageLayout>
