@@ -11,7 +11,7 @@
 # worker (base_url). Local editing ("Work with Local Repository") ignores it.
 backend:
   name: github
-  repo: efnis/efnis-vefur # TODO(Phase 4): the society's GitHub organisation/repo
+  repo: Efnafraedifelag-Islands/Efnis-vefur
   branch: main
 
 site_url: https://efn.is
