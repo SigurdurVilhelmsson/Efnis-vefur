@@ -1,14 +1,5 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageHero from '../../components/PageHero.astro';
-import Sections from '../../components/Sections.astro';
-import { aboutIs } from '../../data/about';
+import EntryPage from '../../layouts/EntryPage.astro';
 ---
 
-<BaseLayout lang="is" title="Um Efnís" description={aboutIs.intro} translation="/en/um-efnis/">
-	<PageHero lang="is" title={aboutIs.title} crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Um Efnís' }]} />
-	<div class="container container--narrow section prose">
-		<p class="lead">{aboutIs.intro}</p>
-		<Sections sections={aboutIs.sections} />
-	</div>
-</BaseLayout>
+<EntryPage slug="um-efnis" lang="is" lead />

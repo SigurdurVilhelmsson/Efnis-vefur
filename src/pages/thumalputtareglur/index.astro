@@ -1,43 +1,35 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageHero from '../../components/PageHero.astro';
+import EntryPage from '../../layouts/EntryPage.astro';
 import Icon from '../../components/Icon.astro';
-import { homepageIs } from '../../data/homepage';
-import { rules, rulesIntro } from '../../data/thumalputtareglur';
-import { inlineMarkdown } from '../../lib/text';
+import { render } from 'astro:content';
+import { getRules } from '../../lib/rules';
+
+const rules = await Promise.all(
+	(await getRules()).map(async (rule) => ({ ...rule, Content: (await render(rule.entry)).Content })),
+);
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
-<BaseLayout lang="is" title={homepageIs.rules.title} description={homepageIs.rules.text}>
-	<PageHero
-		lang="is"
-		title={homepageIs.rules.title}
-		meta={homepageIs.rules.text}
-		crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Þumalputtareglur' }]}
-	/>
-	<div class="container container--narrow section">
-		<p class="lead">{rulesIntro}</p>
-		<ol class="rules" role="list">
-			{rules.map((r) => (
-				<li id={`regla-${r.n}`} class="rule">
-					<h2>
-						<span class="num" aria-hidden="true">{pad(r.n)}</span>
-						<span class="visually-hidden">{r.n}. </span>
-						{r.title}
-					</h2>
-					<div class="body">
-						<Icon name={r.icon} size={32} class="icon" />
-						<p set:html={inlineMarkdown(r.body)}></p>
-					</div>
-				</li>
-			))}
-		</ol>
-	</div>
-</BaseLayout>
+<EntryPage slug="thumalputtareglur" lang="is" lead>
+	<ol class="rules" role="list">
+		{rules.map((r) => (
+			<li id={`regla-${r.n}`} class="rule">
+				<h2>
+					<span class="num" aria-hidden="true">{pad(r.n)}</span>
+					<span class="visually-hidden">{r.n}. </span>
+					{r.title}
+				</h2>
+				<div class="body">
+					<Icon name={r.icon} size={32} class="icon" />
+					<div class="text"><r.Content /></div>
+				</div>
+			</li>
+		))}
+	</ol>
+</EntryPage>
 
 <style>
-	.lead { font-size: var(--text-md); color: var(--fg-2); margin-bottom: 2.5rem; }
-	.rules { list-style: none; margin: 0; padding: 0; }
+	.rules { list-style: none; margin: 2.5rem 0 0; padding: 0; }
 	.rule { padding-block: 1.75rem; border-top: 1px solid var(--border-soft); }
 	h2 { display: flex; align-items: baseline; gap: 0.75rem; font-size: 1.4rem; margin-bottom: 0.75rem; }
 	.num { font-size: 2rem; line-height: 1; color: var(--primary); flex: none; min-width: 2.2ch; }
@@ -45,7 +37,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
 	.rule:nth-child(even) .num { color: var(--accent-dark); }
 	.body { display: grid; grid-template-columns: auto 1fr; gap: 1rem; align-items: start; }
 	.body :global(.icon) { color: var(--primary-dark); margin-top: 0.2rem; }
-	.body p { color: var(--fg-1); margin: 0; }
+	.text { color: var(--fg-1); }
+	.text :global(p) { margin: 0; }
+	.text :global(p + p) { margin-top: 0.75em; }
 	@media (max-width: 480px) {
 		.body { grid-template-columns: 1fr; }
 	}

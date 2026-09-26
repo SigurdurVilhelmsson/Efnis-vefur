@@ -7,33 +7,38 @@ import NewsListItem from '../components/NewsListItem.astro';
 import RulesCarousel from '../components/RulesCarousel.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Button from '../components/Button.astro';
-import { homepageIs as copy } from '../data/homepage';
-import { site } from '../data/site';
-import { events, news } from '../data/placeholder';
-import { rules } from '../data/thumalputtareglur';
+import { getEntry } from 'astro:content';
+import { eventsIn, getSettings, newsIn } from '../lib/content';
+import { getRules } from '../lib/rules';
+import { formatNumber } from '../lib/format';
+import { paragraphs } from '../lib/text';
 import { t } from '../lib/i18n';
 
 const s = t('is');
+const home = await getEntry('forsida', 'is');
+if (!home) throw new Error('Missing homepage file: src/content/forsida/is.yml');
+const copy = home.data;
+const settings = await getSettings();
+const rules = await getRules();
 
 // "Næsti viðburður" is computed at build time; a daily rebuild (Phase 4)
 // makes it roll over when an event has passed.
-const now = new Date();
-const nextEvent = events
-	.filter((e) => e.start >= now)
-	.sort((a, b) => a.start.getTime() - b.start.getTime())[0];
+const nextEvent = (await eventsIn('is')).upcoming[0];
 
-const latestNews = [...news].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 3);
+// Featured news first, then the newest.
+const news = await newsIn('is');
+const latestNews = [...news.filter((n) => n.entry.data.featured), ...news.filter((n) => !n.entry.data.featured)].slice(0, 3);
 ---
 
 <BaseLayout lang="is" description={copy.hero.tagline} translation="/en/">
 	<HeroBand eyebrow={copy.hero.eyebrow} title={copy.hero.title} tagline={copy.hero.tagline}>
-		<p>{copy.hero.intro}</p>
+		{paragraphs(copy.hero.intro).map((p) => <p set:html={p} />)}
 		<Button slot="actions" variant="accent" href="#thumalputtareglur">{s.rules} ↓</Button>
 	</HeroBand>
 
 	<div class="section">
 		<div class="container">
-			<CardGrid cards={copy.cards} headingLevel={2} />
+			<CardGrid cards={copy.cards.map((c) => ({ title: c.title, text: c.text, href: c.link }))} headingLevel={2} />
 		</div>
 	</div>
 
@@ -42,15 +47,15 @@ const latestNews = [...news].sort((a, b) => b.date.getTime() - a.date.getTime())
 			<section aria-labelledby="next-event">
 				<h2 id="next-event">{s.nextEvent}</h2>
 				{nextEvent
-					? <EventBlock lang="is" title={nextEvent.title} start={nextEvent.start} place={nextEvent.place} href={`/vidburdir/${nextEvent.slug}/`} registrationUrl={nextEvent.registrationUrl} />
-					: <p class="fallback">{site.nextEventFallback.is}</p>}
+					? <EventBlock lang="is" title={nextEvent.entry.data.title} start={nextEvent.entry.data.start} place={nextEvent.entry.data.place} href={`/vidburdir/${nextEvent.slug}/`} registrationUrl={nextEvent.entry.data.registration_url} />
+					: <p class="fallback">{settings.next_event_fallback}</p>}
 			</section>
 
 			<section aria-labelledby="latest-news">
 				<h2 id="latest-news">{s.news}</h2>
 				<ul class="news" role="list">
 					{latestNews.map((n) => (
-						<li><NewsListItem lang="is" title={n.title} date={n.date} href={`/frettir/${n.slug}/`} /></li>
+						<li><NewsListItem lang="is" title={n.entry.data.title} date={n.entry.data.date} href={`/frettir/${n.urlSlug}/`} /></li>
 					))}
 				</ul>
 				<p class="all"><a href="/frettir/">{s.allNews}</a></p>
@@ -61,8 +66,9 @@ const latestNews = [...news].sort((a, b) => b.date.getTime() - a.date.getTime())
 	<RulesCarousel lang="is" rules={rules} title={copy.rules.title} intro={copy.rules.text} href="/thumalputtareglur/" />
 
 	<CtaBand title={copy.membership.title}>
-		{copy.membership.text.map((p) => <p>{p}</p>)}
-		<Button slot="actions" variant="ghost" href={copy.membership.href}>{copy.membership.linkLabel} →</Button>
+		{paragraphs(copy.membership.text).map((p) => <p set:html={p} />)}
+		<p>Árgjald félagsins er {formatNumber(settings.membership_fee, 'is')} kr.</p>
+		<Button slot="actions" variant="ghost" href={copy.membership.link}>{copy.membership.link_label} →</Button>
 	</CtaBand>
 </BaseLayout>
 

@@ -2,17 +2,17 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import NewsListItem from '../../components/NewsListItem.astro';
-import { news } from '../../data/placeholder';
+import { newsIn } from '../../lib/content';
 
-const items = [...news].sort((a, b) => b.date.getTime() - a.date.getTime());
+const items = await newsIn('is');
 ---
 
 <BaseLayout lang="is" title="Fréttir">
 	<PageHero lang="is" title="Fréttir" crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Fréttir' }]} />
 	<div class="container container--narrow section">
 		<ul class="list" role="list">
-			{items.map((n) => (
-				<li><NewsListItem lang="is" title={n.title} date={n.date} href={`/frettir/${n.slug}/`} summary={n.summary} headingLevel={2} /></li>
+			{items.map(({ entry, urlSlug }) => (
+				<li><NewsListItem lang="is" title={entry.data.title} date={entry.data.date} href={`/frettir/${urlSlug}/`} summary={entry.data.summary} headingLevel={2} /></li>
 			))}
 		</ul>
 	</div>

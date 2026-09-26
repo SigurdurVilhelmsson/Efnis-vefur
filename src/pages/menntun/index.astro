@@ -1,8 +1,5 @@
 ---
-import PageLayout from '../../layouts/PageLayout.astro';
-import Todo from '../../components/Todo.astro';
+import EntryPage from '../../layouts/EntryPage.astro';
 ---
 
-<PageLayout lang="is" title="Menntun og úrræði" crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Menntun og úrræði' }]}>
-	<Todo what="efni síðunnar Menntun og úrræði, flutt af WordPress í 3. áfanga" />
-</PageLayout>
+<EntryPage slug="menntun" lang="is" />

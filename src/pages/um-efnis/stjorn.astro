@@ -1,7 +1,9 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import BoardList from '../../components/BoardList.astro';
-import { board } from '../../data/placeholder';
+import { getCollection } from 'astro:content';
+
+const board = (await getCollection('stjorn')).map((m) => m.data);
 ---
 
 <PageLayout lang="is" title="Stjórn" crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Um Efnís', href: '/um-efnis/' }, { label: 'Stjórn' }]}>

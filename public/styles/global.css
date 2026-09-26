@@ -308,7 +308,9 @@ code, pre {
 /* ── PROSE (rendered Markdown bodies, also used by the CMS preview) ── */
 .prose { color: var(--fg-1); }
 .prose > * + * { margin-top: 1.1em; }
-.prose p { margin: 0; }
+.prose p { margin-bottom: 0; } /* spacing comes from `.prose > * + *` */
+/* Pages whose first paragraph is an introduction (Um Efnís). */
+.prose--lead > p:first-child { font-size: var(--text-md); color: var(--fg-2); }
 .prose h2 { font-size: 1.4rem; margin: 2.25rem 0 0.75rem; }
 .prose h3 { font-size: 1.15rem; margin: 1.75rem 0 0.5rem; }
 .prose h2 + *, .prose h3 + * { margin-top: 0; }
@@ -327,4 +329,5 @@ code, pre {
 .prose table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
 .prose th, .prose td { text-align: left; padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
 .prose th { color: var(--primary-dark); font-weight: 600; }
+.prose td:first-child { white-space: nowrap; } /* keep short codes like P-01 on one line */
 .table-scroll { overflow-x: auto; }

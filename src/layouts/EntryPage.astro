@@ -1,0 +1,48 @@
+---
+/**
+ * A fixed page from the `sidur` collection: hero with breadcrumbs, then the
+ * Markdown body. Extra content (e.g. the rules list) goes in the slot.
+ */
+import BaseLayout from './BaseLayout.astro';
+import PageHero, { type Crumb } from '../components/PageHero.astro';
+import { render } from 'astro:content';
+import { PAGE_PATHS, exists, requirePage } from '../lib/content';
+import { localePath, mainNav, t, type Lang } from '../lib/i18n';
+
+interface Props {
+	slug: string;
+	lang: Lang;
+	/** Style the first paragraph as an introduction. */
+	lead?: boolean;
+}
+const { slug, lang, lead = false } = Astro.props;
+
+const entry = await requirePage(slug, lang);
+const { Content } = await render(entry);
+
+// Breadcrumb labels: the menu label if the page is in the menu, else its title.
+async function crumbFor(pageSlug: string): Promise<Crumb> {
+	const href = localePath(PAGE_PATHS[pageSlug].path, lang);
+	const nav = mainNav[lang].find((item) => item.href === href);
+	const title = nav?.label ?? (await requirePage(pageSlug, lang)).data.title;
+	return { label: title, href };
+}
+const { parent } = PAGE_PATHS[slug];
+const crumbs: Crumb[] = [{ label: t(lang).home, href: localePath('/', lang) }];
+if (parent) crumbs.push(await crumbFor(parent));
+crumbs.push({ label: (await crumbFor(slug)).label });
+
+const otherLang: Lang = lang === 'is' ? 'en' : 'is';
+const translation = (await exists('sidur', slug, otherLang)) ? localePath(PAGE_PATHS[slug].path, otherLang) : undefined;
+const { title, description } = entry.data;
+---
+
+<BaseLayout lang={lang} title={crumbs.at(-1)!.label} description={description} translation={translation}>
+	<PageHero lang={lang} title={title} crumbs={crumbs} meta={description} />
+	<div class="container container--narrow section">
+		<div class:list={['prose', { 'prose--lead': lead }]}>
+			<Content />
+		</div>
+		<slot />
+	</div>
+</BaseLayout>

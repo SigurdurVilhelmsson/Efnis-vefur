@@ -1,0 +1,22 @@
+---
+/**
+ * English versions of fixed pages (sidur). A page exists here only if an
+ * editor has added its English translation in the CMS; there is never an
+ * Icelandic fallback on an English page.
+ */
+import EntryPage from '../../layouts/EntryPage.astro';
+import { PAGE_PATHS, entriesIn } from '../../lib/content';
+
+export async function getStaticPaths() {
+	const pages = await entriesIn('sidur', 'en');
+	return pages.map(({ slug }) => {
+		const known = PAGE_PATHS[slug];
+		if (!known) throw new Error(`src/content/sidur/${slug}.en.md: no page path for "${slug}" in PAGE_PATHS (src/lib/content.ts)`);
+		return { params: { path: known.path.replace(/^\/|\/$/g, '') }, props: { slug } };
+	});
+}
+
+const { slug } = Astro.props;
+---
+
+<EntryPage slug={slug} lang="en" lead={slug === 'um-efnis'} />

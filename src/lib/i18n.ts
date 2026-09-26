@@ -45,6 +45,13 @@ export const ui = {
 		bylaws: 'Lög félagsins',
 		board: 'Stjórn',
 		contact: 'Netfang', // (UI)
+		programme: 'Dagskrá',
+		info: 'Upplýsingar',
+		date: 'Dagsetning',
+		venue: 'Staður',
+		sponsors: 'Styrktaraðilar',
+		committee: 'Ráðstefnunefnd',
+		otherConferences: 'Aðrar ráðstefnur', // (UI)
 	},
 	en: {
 		siteName: 'The Icelandic Chemical Society',
@@ -72,6 +79,13 @@ export const ui = {
 		bylaws: 'Bylaws (in Icelandic)',
 		board: 'Board (in Icelandic)',
 		contact: 'Email',
+		programme: 'Programme',
+		info: 'Information',
+		date: 'Date',
+		venue: 'Venue',
+		sponsors: 'Sponsors',
+		committee: 'Conference committee',
+		otherConferences: 'Other conferences',
 	},
 } as const satisfies Record<Lang, Record<string, string>>;
 

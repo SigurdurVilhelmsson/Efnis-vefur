@@ -1,17 +1,19 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeroBand from '../../components/HeroBand.astro';
-import Sections from '../../components/Sections.astro';
-import { homepageEn } from '../../data/homepage';
+import { getEntry, render } from 'astro:content';
+import { paragraphs } from '../../lib/text';
 
-const [intro, ...sections] = homepageEn.sections;
+const home = await getEntry('forsida_en', 'en');
+if (!home) throw new Error('Missing English homepage file: src/content/forsida/en.md');
+const { Content } = await render(home);
 ---
 
-<BaseLayout lang="en" description="The Icelandic Chemical Society (Efnís), founded in 1999." translation="/">
-	<HeroBand title={homepageEn.title}>
-		{intro.paragraphs?.map((p) => <p>{p}</p>)}
+<BaseLayout lang="en" description={home.data.description} translation="/">
+	<HeroBand title={home.data.title}>
+		{paragraphs(home.data.intro).map((p) => <p set:html={p} />)}
 	</HeroBand>
 	<div class="container container--narrow section prose">
-		<Sections sections={sections} />
+		<Content />
 	</div>
 </BaseLayout>

@@ -1,0 +1,26 @@
+---
+/** One news item (frettir), in either language. */
+import PageLayout from './PageLayout.astro';
+import type { Crumb } from '../components/PageHero.astro';
+import { render, type CollectionEntry } from 'astro:content';
+import { formatDate } from '../lib/format';
+import { localePath, t, type Lang } from '../lib/i18n';
+
+interface Props {
+	entry: CollectionEntry<'frettir'>;
+	lang: Lang;
+	/** URL of the other language's version, if there is one. */
+	translation?: string;
+}
+const { entry, lang, translation } = Astro.props;
+const { Content } = await render(entry);
+const { title, date, summary, image, image_alt } = entry.data;
+const s = t(lang);
+const crumbs: Crumb[] = [{ label: s.home, href: localePath('/', lang) }];
+if (lang === 'is') crumbs.push({ label: s.news, href: '/frettir/' });
+---
+
+<PageLayout lang={lang} title={title} meta={formatDate(date, lang)} description={summary} crumbs={crumbs} translation={translation}>
+	{image && <img src={image} alt={image_alt ?? ''} loading="lazy" decoding="async" />}
+	<Content />
+</PageLayout>

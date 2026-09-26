@@ -1,0 +1,16 @@
+---
+/** English versions of news items; only those with an English translation. */
+import NewsPage from '../../../layouts/NewsPage.astro';
+import { newsIn } from '../../../lib/content';
+
+export async function getStaticPaths() {
+	return (await newsIn('en')).map(({ entry, urlSlug }) => ({
+		params: { slug: urlSlug },
+		props: { entry, translation: `/frettir/${urlSlug}/` },
+	}));
+}
+
+const { entry, translation } = Astro.props;
+---
+
+<NewsPage entry={entry} lang="en" translation={translation} />

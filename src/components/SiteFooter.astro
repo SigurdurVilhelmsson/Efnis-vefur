@@ -4,8 +4,9 @@
  * contact email and links to lög, stjórn and English, plus the main nav.
  */
 import EfnisMark from './EfnisMark.astro';
-import { mainNav, t, type Lang } from '../lib/i18n';
-import { site } from '../data/site';
+import { getCollection, render } from 'astro:content';
+import { getSettings } from '../lib/content';
+import { localePath, mainNav, t, type Lang } from '../lib/i18n';
 
 interface Props {
 	lang: Lang;
@@ -13,6 +14,18 @@ interface Props {
 const { lang } = Astro.props;
 const s = t(lang);
 const year = new Date().getFullYear();
+const settings = await getSettings();
+const emblemTeaser = lang === 'is' ? settings.emblem_teaser : settings.emblem_teaser_en;
+
+// "Merki félagsins →" points at the emblem heading on the About page. The
+// heading's id comes from its text, so look it up rather than hard-coding it.
+let emblemHref: string | undefined;
+const about = (await getCollection('sidur')).find((entry) => entry.id === `um-efnis.${lang}`);
+if (about) {
+	const { headings } = await render(about);
+	const heading = headings.find((h) => /merki|emblem/i.test(h.text));
+	emblemHref = localePath('/um-efnis/', lang) + (heading ? `#${heading.slug}` : '');
+}
 ---
 
 <footer class="site-footer on-dark">
@@ -25,11 +38,11 @@ const year = new Date().getFullYear();
 			<p>{lang === 'is' ? 'Reykjavík · stofnað 1999' : 'Reykjavík · founded 1999'}</p>
 			<p>
 				<span class="visually-hidden">{s.contact}: </span>
-				<a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+				<a href={`mailto:${settings.contact_email}`}>{settings.contact_email}</a>
 			</p>
 			<p class="emblem">
-				{site.emblemTeaser[lang]}{' '}
-				<a href={lang === 'is' ? '/um-efnis/#merki' : '/en/um-efnis/#emblem'}>{s.emblemMore} →</a>
+				{emblemTeaser}
+				{emblemHref && <>{' '}<a href={emblemHref}>{s.emblemMore} →</a></>}
 			</p>
 		</div>
 

@@ -1,8 +1,5 @@
 ---
-import PageLayout from '../../layouts/PageLayout.astro';
-import Todo from '../../components/Todo.astro';
+import EntryPage from '../../layouts/EntryPage.astro';
 ---
 
-<PageLayout lang="is" title="Lög félagsins" crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Um Efnís', href: '/um-efnis/' }, { label: 'Lög félagsins' }]}>
-	<Todo what="lagatextinn úr _input/content/Lög_Efnafræðifélags_Íslands.md (settur inn í 2. áfanga)" />
-</PageLayout>
+<EntryPage slug="log" lang="is" />

@@ -1,0 +1,16 @@
+---
+/** English versions of events; only those with an English translation. */
+import EventPage from '../../../layouts/EventPage.astro';
+import { entriesIn } from '../../../lib/content';
+
+export async function getStaticPaths() {
+	return (await entriesIn('vidburdir', 'en')).map(({ entry, slug }) => ({
+		params: { slug },
+		props: { entry, translation: `/vidburdir/${slug}/` },
+	}));
+}
+
+const { entry, translation } = Astro.props;
+---
+
+<EventPage entry={entry} lang="en" translation={translation} />

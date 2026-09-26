@@ -1,72 +1,16 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageHero from '../../components/PageHero.astro';
-import InfoCard from '../../components/InfoCard.astro';
-import ProgrammeTable from '../../components/ProgrammeTable.astro';
-import Todo from '../../components/Todo.astro';
-import Txt from '../../components/Txt.astro';
-import { conferences } from '../../data/placeholder';
+import ConferencePage from '../../layouts/ConferencePage.astro';
+import { entriesIn } from '../../lib/content';
 
-export function getStaticPaths() {
-	return conferences.map((conf) => ({ params: { year: String(conf.year) }, props: { conf } }));
+export async function getStaticPaths() {
+	const english = new Set((await entriesIn('radstefnur', 'en')).map((c) => c.slug));
+	return (await entriesIn('radstefnur', 'is')).map(({ entry, slug }) => ({
+		params: { year: String(entry.data.year) },
+		props: { entry, translation: english.has(slug) ? `/en/radstefnur/${entry.data.year}/` : undefined },
+	}));
 }
 
-const { conf } = Astro.props;
-const title = `${conf.number}. ráðstefna Efnís — ${conf.year}`;
-const others = conferences.filter((c) => c.year !== conf.year);
-
-// Placeholder rows until the programme comes from Ráðstefna_2024.pdf (Phase 2).
-const programme = [
-	{ time: '09:00', code: 'TODO', title: 'TODO(texti): dagskrárliður', speaker: 'TODO(texti): fyrirlesari' },
-	{ time: '09:30', code: 'TODO', title: 'TODO(texti): dagskrárliður', speaker: 'TODO(texti): fyrirlesari' },
-	{ time: '10:00', title: 'TODO(texti): dagskrárliður' },
-];
+const { entry, translation } = Astro.props;
 ---
 
-<BaseLayout lang="is" title={title}>
-	<PageHero
-		lang="is"
-		title={title}
-		meta={conf.theme}
-		crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Ráðstefnur', href: '/radstefnur/' }, { label: String(conf.year) }]}
-	/>
-	<div class="container section layout">
-		<div class="main prose">
-			<Todo what={`lýsing á ráðstefnunni ${conf.year}`} />
-			<h2>Dagskrá</h2>
-			<ProgrammeTable rows={programme} caption={`Dagskrá ${conf.year}`} />
-		</div>
-		<aside>
-			<InfoCard title="Upplýsingar">
-				<dl>
-					<dt>Dagsetning</dt><dd><Txt text="TODO(texti): dagsetning" /></dd>
-					<dt>Staður</dt><dd><Txt text="TODO(texti): staður" /></dd>
-					<dt>Verð</dt><dd><Txt text="TODO(texti): verð" /></dd>
-				</dl>
-			</InfoCard>
-			<InfoCard title="Styrktaraðilar">
-				<p><Txt text="TODO(texti): styrktaraðilar (lógó og tenglar)" /></p>
-			</InfoCard>
-			<InfoCard title="Undirbúningsnefnd">
-				<p><Txt text="TODO(texti): nöfn nefndarmanna" /></p>
-			</InfoCard>
-			{others.length > 0 && (
-				<InfoCard title="Fyrri ráðstefnur">
-					<ul>{others.map((c) => <li><a href={`/radstefnur/${c.year}/`}>{c.year}</a></li>)}</ul>
-				</InfoCard>
-			)}
-		</aside>
-	</div>
-</BaseLayout>
-
-<style>
-	.layout {
-		display: grid;
-		grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-		gap: clamp(2rem, 5vw, 3rem);
-		align-items: start;
-	}
-	@media (max-width: 860px) {
-		.layout { grid-template-columns: 1fr; }
-	}
-</style>
+<ConferencePage entry={entry} lang="is" translation={translation} />

@@ -2,11 +2,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import EventBlock from '../../components/EventBlock.astro';
-import { events } from '../../data/placeholder';
+import { eventsIn } from '../../lib/content';
 
-const now = new Date();
-const upcoming = events.filter((e) => e.start >= now).sort((a, b) => a.start.getTime() - b.start.getTime());
-const past = events.filter((e) => e.start < now).sort((a, b) => b.start.getTime() - a.start.getTime());
+const { upcoming, past } = await eventsIn('is');
 ---
 
 <BaseLayout lang="is" title="Viðburðir">
@@ -14,7 +12,7 @@ const past = events.filter((e) => e.start < now).sort((a, b) => b.start.getTime(
 	<div class="container container--narrow section">
 		<ul class="list" role="list">
 			{upcoming.map((e) => (
-				<li><EventBlock lang="is" title={e.title} start={e.start} place={e.place} href={`/vidburdir/${e.slug}/`} registrationUrl={e.registrationUrl} headingLevel={2} /></li>
+				<li><EventBlock lang="is" title={e.entry.data.title} start={e.entry.data.start} place={e.entry.data.place} href={`/vidburdir/${e.slug}/`} registrationUrl={e.entry.data.registration_url} headingLevel={2} /></li>
 			))}
 		</ul>
 		{past.length > 0 && (
@@ -22,7 +20,7 @@ const past = events.filter((e) => e.start < now).sort((a, b) => b.start.getTime(
 				<h2 class="past-title"><span class="todo">TODO(texti): fyrirsögn — liðnir viðburðir</span></h2>
 				<ul class="list" role="list">
 					{past.map((e) => (
-						<li><EventBlock lang="is" title={e.title} start={e.start} place={e.place} href={`/vidburdir/${e.slug}/`} headingLevel={3} /></li>
+						<li><EventBlock lang="is" title={e.entry.data.title} start={e.entry.data.start} place={e.entry.data.place} href={`/vidburdir/${e.slug}/`} headingLevel={3} /></li>
 					))}
 				</ul>
 			</>

@@ -1,0 +1,89 @@
+---
+/** One conference (radstefnur), in either language. */
+import BaseLayout from './BaseLayout.astro';
+import PageHero, { type Crumb } from '../components/PageHero.astro';
+import InfoCard from '../components/InfoCard.astro';
+import ProgrammeTable from '../components/ProgrammeTable.astro';
+import { render, type CollectionEntry } from 'astro:content';
+import { conferenceTitle, entriesIn } from '../lib/content';
+import { formatDate } from '../lib/format';
+import { localePath, t, type Lang } from '../lib/i18n';
+
+interface Props {
+	entry: CollectionEntry<'radstefnur'>;
+	lang: Lang;
+	translation?: string;
+}
+const { entry, lang, translation } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const s = t(lang);
+
+const title = conferenceTitle(d, lang);
+const others = (await entriesIn('radstefnur', lang))
+	.map((c) => c.entry.data.year)
+	.filter((year) => year !== d.year)
+	.sort((a, b) => b - a);
+const crumbs: Crumb[] = [{ label: s.home, href: localePath('/', lang) }];
+if (lang === 'is') crumbs.push({ label: s.conferences, href: '/radstefnur/' });
+crumbs.push({ label: String(d.year) });
+---
+
+<BaseLayout lang={lang} title={title} description={d.theme} translation={translation}>
+	<PageHero lang={lang} title={title} meta={d.theme} crumbs={crumbs} />
+	<div class="container section layout">
+		<div class="main">
+			{d.programme.length > 0 && (
+				<>
+					<h2>{s.programme}</h2>
+					<ProgrammeTable rows={d.programme} caption={`${s.programme} ${d.year}`} />
+				</>
+			)}
+			<div class="prose"><Content /></div>
+		</div>
+		<aside>
+			<InfoCard title={s.info}>
+				<dl>
+					<dt>{s.date}</dt><dd><time datetime={d.date.toISOString().slice(0, 10)}>{formatDate(d.date, lang)}</time></dd>
+					<dt>{s.venue}</dt><dd>{d.venue}</dd>
+					{d.prices.map((p) => <><dt>{p.label}</dt><dd>{p.amount}</dd></>)}
+				</dl>
+			</InfoCard>
+			{d.sponsors.length > 0 && (
+				<InfoCard title={s.sponsors}>
+					<ul class="sponsors">
+						{d.sponsors.map((sp) => {
+							const label = sp.logo ? <img src={sp.logo} alt={sp.name} loading="lazy" decoding="async" /> : sp.name;
+							return <li>{sp.url ? <a href={sp.url}>{label}</a> : label}</li>;
+						})}
+					</ul>
+				</InfoCard>
+			)}
+			{d.committee.length > 0 && (
+				<InfoCard title={s.committee}>
+					<ul>{d.committee.map((name) => <li>{name}</li>)}</ul>
+				</InfoCard>
+			)}
+			{others.length > 0 && (
+				<InfoCard title={s.otherConferences}>
+					<ul>{others.map((year) => <li><a href={localePath(`/radstefnur/${year}/`, lang)}>{year}</a></li>)}</ul>
+				</InfoCard>
+			)}
+		</aside>
+	</div>
+</BaseLayout>
+
+<style>
+	.layout {
+		display: grid;
+		grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+		gap: clamp(2rem, 5vw, 3rem);
+		align-items: start;
+	}
+	.main > h2:first-child { margin-top: 0; }
+	.prose { margin-top: 2.5rem; }
+	.sponsors img { max-height: 3rem; width: auto; }
+	@media (max-width: 860px) {
+		.layout { grid-template-columns: 1fr; }
+	}
+</style>

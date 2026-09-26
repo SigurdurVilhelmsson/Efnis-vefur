@@ -1,0 +1,16 @@
+---
+/** English versions of conference pages; only those with an English translation. */
+import ConferencePage from '../../../layouts/ConferencePage.astro';
+import { entriesIn } from '../../../lib/content';
+
+export async function getStaticPaths() {
+	return (await entriesIn('radstefnur', 'en')).map(({ entry }) => ({
+		params: { year: String(entry.data.year) },
+		props: { entry, translation: `/radstefnur/${entry.data.year}/` },
+	}));
+}
+
+const { entry, translation } = Astro.props;
+---
+
+<ConferencePage entry={entry} lang="en" translation={translation} />

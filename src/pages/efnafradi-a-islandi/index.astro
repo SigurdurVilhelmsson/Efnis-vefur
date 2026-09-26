@@ -1,8 +1,5 @@
 ---
-import PageLayout from '../../layouts/PageLayout.astro';
-import Todo from '../../components/Todo.astro';
+import EntryPage from '../../layouts/EntryPage.astro';
 ---
 
-<PageLayout lang="is" title="Efnafræði á Íslandi" crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Efnafræði á Íslandi' }]}>
-	<Todo what="efni síðunnar Efnafræði á Íslandi (rannsóknir, iðnaður, jarðhiti), flutt af WordPress í 3. áfanga" />
-</PageLayout>
+<EntryPage slug="efnafradi-a-islandi" lang="is" />

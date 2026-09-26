@@ -1,21 +1,16 @@
 ---
-import PageLayout from '../../layouts/PageLayout.astro';
-import Todo from '../../components/Todo.astro';
-import { news } from '../../data/placeholder';
-import { formatDate } from '../../lib/format';
+import NewsPage from '../../layouts/NewsPage.astro';
+import { newsIn } from '../../lib/content';
 
-export function getStaticPaths() {
-	return news.map((item) => ({ params: { slug: item.slug }, props: { item } }));
+export async function getStaticPaths() {
+	const english = new Set((await newsIn('en')).map((n) => n.slug));
+	return (await newsIn('is')).map(({ entry, slug, urlSlug }) => ({
+		params: { slug: urlSlug },
+		props: { entry, translation: english.has(slug) ? `/en/frettir/${urlSlug}/` : undefined },
+	}));
 }
 
-const { item } = Astro.props;
+const { entry, translation } = Astro.props;
 ---
 
-<PageLayout
-	lang="is"
-	title={item.title}
-	meta={formatDate(item.date, 'is')}
-	crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Fréttir', href: '/frettir/' }]}
->
-	<Todo what="meginmál fréttar (úr frettir-safninu í 2. áfanga)" />
-</PageLayout>
+<NewsPage entry={entry} lang="is" translation={translation} />

@@ -3,11 +3,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import CardGrid from '../../components/CardGrid.astro';
 import Todo from '../../components/Todo.astro';
-import { conferences } from '../../data/placeholder';
+import { conferenceTitle, entriesIn } from '../../lib/content';
 
-const cards = [...conferences]
+const cards = (await entriesIn('radstefnur', 'is'))
+	.map(({ entry }) => entry.data)
 	.sort((a, b) => b.year - a.year)
-	.map((c) => ({ title: `${c.number}. ráðstefna Efnís — ${c.year}`, text: c.theme, href: `/radstefnur/${c.year}/` }));
+	.map((c) => ({ title: conferenceTitle(c, 'is'), text: c.theme, href: `/radstefnur/${c.year}/` }));
 ---
 
 <BaseLayout lang="is" title="Ráðstefnur">
