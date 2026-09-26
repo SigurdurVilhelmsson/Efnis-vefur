@@ -1,6 +1,6 @@
 # Þumalputtareglur: proofreading proposal
 
-Proofread 2026-09-25 by Claude, at Siggi's request. **Nothing here has been applied.** The site still shows the draft verbatim (`_input/design-system/project/source-docs/thumalputtareglur-drog.md`, útgáfa 2), marked as unapproved. Accept or reject each item; the accepted ones go in when the rules move into the CMS in Phase 2.
+Proofread 2026-09-25 by Claude, at Siggi's request, against the draft `_input/design-system/project/source-docs/thumalputtareglur-drog.md` (útgáfa 2). Siggi's decisions (2026-09-26) are at the end of this file under **Ákvarðanir**; they are applied in `src/data/thumalputtareglur.ts`.
 
 **Kinds of change:**
 - **Staðreynd:** factual or scientific accuracy.
@@ -160,3 +160,34 @@ Otherwise accurate.
 - The intro's reference to „Tumregler“ (Svenska Kemisamfundet) only needs the quote fix (A1).
 - "E-númer eru ekki vond, þvert á móti" and "Áburður … hefur bjargað milljörðum mannslífa" are rhetorical. They're defensible, but your call.
 - The UI kit's carousel texts (`RULES_DATA`) differ from the draft's *Stutt kort*. The site uses the draft's cards.
+
+## Ákvarðanir (2026-09-26)
+
+Siggi accepted every proposal, including the ⚠️ ones, with these exceptions:
+
+| Item | Decision |
+|---|---|
+| A3 | **Reversed:** *koldíoxíð* throughout, following the Icelandic IUPAC naming taught in schools. Rule 6's title becomes „Koldíoxíð er alltaf sama efnið“. Gender follows: *endurnýjanlegt CO₂*, *hvort sem það kemur…* |
+| 12b | **Rejected:** keep *nituroxíð*. *Nitur* is used throughout, so 14's *köfnunarefni* becomes *nitur* (card: *nitri*) |
+| 10a | Retarget to „kemísk efni“ |
+| 9b | *Klórbleikiefni*, not *klórbleikja* |
+| 1a | *Bótúlíneitur* |
+| 1d | Keep *kúlufiskur* |
+| 2a | The closer translation. The card now quotes its second half |
+| 3c | Softened: *…staðfesting á að efnið hafi verið metið* |
+| 8b | Accepted as proposed; Bláa lónið stays named |
+| 12c | HNO₃ stays *saltpéturssýra* |
+| Cards | Mirror the body fixes in the short cards: 3 (title „E-númer = metið öruggt“, EFSA wording), 5 (*úr atómum og sameindum*), 6 (*af jarðefnauppruna*), 8 (*efnasamsetningu vatnsins*), 12 (title „Súrt ≠ manngert“) |
+
+Follow-on fixes made while applying (small, flagged for review in the diff):
+
+- 4a: „…kvikasilfur eða hálfmálminn arsen“ (comma list, not a second em-dash in the same sentence).
+- 4 card: *segðu* → *segið* (A2).
+- 8b: „…— ekki **með** dulrænum efnafræðilegum krafti“ (the new verb *skýra með* needs the preposition repeated).
+- 9d: „…sem klóríðjónir (Cl⁻), sem eru alveg öruggar og raunar lífsnauðsynlegar“ (agreement with *jónir*).
+- 10a: „Þegar **orðasambandið** „kemísk efni“…“ (two words, so not *orðið*).
+- 11c: the subject is *pH*, not *pH-kvarðinn* (the scale isn't the logarithm; the value is).
+- 12d: the Holuhraun sentence goes just before the closing sentence, which it supports.
+- 12 card: *súrra* → *súrara* (neuter comparative, as in 11a).
+- 14b: „…án **hans** væru hungursneyðir…“ (referent is now *tilbúinn áburður*).
+- 14c: „…breytir nitri … og **hefur margfaldað**…“ (my proposal mixed present and past tense).

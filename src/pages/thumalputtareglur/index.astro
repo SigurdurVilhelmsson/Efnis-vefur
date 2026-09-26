@@ -16,7 +16,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
 		crumbs={[{ label: 'Forsíða', href: '/' }, { label: 'Þumalputtareglur' }]}
 	/>
 	<div class="container container--narrow section">
-		<p class="draft"><span class="todo">TODO(texti): reglurnar eru drög (útgáfa 2, apríl 2026) sem bíða yfirlestrar og samþykkis</span></p>
 		<p class="lead">{rulesIntro}</p>
 		<ol class="rules" role="list">
 			{rules.map((r) => (
@@ -37,7 +36,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </BaseLayout>
 
 <style>
-	.draft { margin-bottom: 1.5rem; }
 	.lead { font-size: var(--text-md); color: var(--fg-2); margin-bottom: 2.5rem; }
 	.rules { list-style: none; margin: 0; padding: 0; }
 	.rule { padding-block: 1.75rem; border-top: 1px solid var(--border-soft); }
