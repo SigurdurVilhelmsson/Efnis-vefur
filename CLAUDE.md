@@ -44,7 +44,7 @@ English is optional per entry. **Never show Icelandic text on an English page**;
 
 ## Content model (summary)
 
-Collections: `frettir`, `vidburdir`, `sidur` (create/delete off), `radstefnur`, `stjorn`, `settings` (single file). Every collection has a Zod schema **and** a matching Sveltia collection; a check script fails if they drift. **Invalid content must fail the build** (live site stays on last good deploy — a selling point, keep it).
+Collections: `frettir`, `vidburdir`, `sidur` (create/delete off), `radstefnur`, `stjorn`, `reglur` (Þumalputtareglur, create/delete off), `settings` and `forsida`/`forsida_en` (single files). Schemas in `src/lib/schemas.ts`, CMS in `public/admin/config.yml`, check script `scripts/check-cms-config.mjs`. Every collection has a Zod schema **and** a matching Sveltia collection; a check script fails if they drift. **Invalid content must fail the build** (live site stays on last good deploy — a selling point, keep it).
 i18n: Sveltia `multiple_files` (`<slug>.is.md`, `<slug>.en.md`). CMS labels, hints and collection names in Icelandic. Media in `public/images/uploads/`, referenced as `/images/uploads/...`. Full field lists: `KICKOFF.md` → "Content model".
 
 ## Icelandic language rules
@@ -58,7 +58,7 @@ i18n: Sveltia `multiple_files` (`<slug>.is.md`, `<slug>.en.md`). CMS labels, hin
 
 ## Quality floor
 
-Responsive to phone width; visible keyboard focus (`:focus-visible`); `prefers-reduced-motion` respected; WCAG AA contrast; semantic HTML; no font layout shift. Lighthouse 95+ performance and accessibility. CMS preview (`preview_styles`) loads the site's CSS.
+Responsive to phone width; visible keyboard focus (`:focus-visible`); `prefers-reduced-motion` respected; WCAG AA contrast; semantic HTML; no font layout shift. Lighthouse 95+ performance and accessibility. CMS preview loads the site's CSS (`CMS.registerPreviewStyle` in `public/admin/index.html`; `preview_styles` isn't a real Sveltia option).
 
 ## Working rules
 
@@ -73,6 +73,8 @@ Responsive to phone width; visible keyboard focus (`:focus-visible`); `prefers-r
 - `npm run dev` — local dev server
 - `npm run build` — static build to `dist/`
 - `npm run preview` — serve the build
+- `npm run check:cms` — Zod schemas vs CMS config (first step of `npm run build`)
+- CMS locally: `npm run dev`, then open `http://localhost:4321/admin/index.html` in Chrome/Edge → "Work with Local Repository"
 
 ## Decisions log
 
@@ -98,3 +100,17 @@ Responsive to phone width; visible keyboard focus (`:focus-visible`); `prefers-r
 - 2026-09-25 — **About page copy** (`_input/content/efnis-about-content.md`, from Siggi) supersedes earlier decisions: the fee is **3.000 kr / 3,000 ISK (approx. €20)**, and membership is **not open to everyone** (bylaws, 3. grein). So: the header's "Gerast félagi" button is gone; the hero keeps only "Þumalputtareglur ↓"; homepage card 4 ("Gerðu þig félag — Opið öllum …") became "Um Efnís" with the About intro's "vettvangur fyrir alla" sentence; the membership CTA band became an information band (Félagsaðild eligibility text + fee + "Nánari upplýsingar um félagsaðild"). The footer's kit sentence ("…og áhugafólks um efnafræði") was replaced by "Reykjavík · stofnað 1999" and the emblem teaser (first sentence of "Merki félagsins") suggested in the About notes.
 - 2026-09-25 — `/um-efnis/` renders the About copy; `/en/um-efnis/` is its English version (same slug under `/en/`, matching how Sveltia's `multiple_files` will name translations; the notes suggested `/en/about/`, which is a one-line change if preferred). English nav now has "About". `/um-efnis/felagsadild/` shows the About page's Félagsaðild text plus a link to the bylaws.
 - 2026-09-26 — Þumalputtareglur corrections approved and applied (`src/data/thumalputtareglur.ts`); the "drög" marker on `/thumalputtareglur/` is gone. Terminology choices: *koldíoxíð* (not koltvísýringur), *nitur*/*nituroxíð* (not köfnunarefni), *kemísk efni*, *klórbleikiefni*, *bótúlíneitur*, *kúlufiskur*, *saltpéturssýra*. Full record in `docs/thumalputtareglur-yfirlestur.md` → Ákvarðanir.
+- 2026-09-26 — Phase 2 dependencies (approved): `@astrojs/markdown-satteri` direct, to set `smartPunctuation: false` (Astro 7's Markdown turns straight quotes into English “…” on Icelandic pages); `yaml` (dev) for the CMS check script.
+- 2026-09-26 — Schemas live in `src/lib/schemas.ts` (not in `content.config.ts`) so the Node check script can import them. It runs with `--experimental-strip-types` (Node 22.12–22.17 need the flag; later versions ignore it). The check compares field names both ways, recursing into lists/objects; `body` must exist exactly when files are Markdown.
+- 2026-09-26 — Entry ids keep the language: `glob()` with a custom `generateId`, so `um-efnis.is.md` → id `um-efnis.is` (Astro's default id drops the dots). `splitId()` in `src/lib/content.ts` gives `{ slug, lang }`. No `slug` field anywhere (Astro would use it as the id).
+- 2026-09-26 — Missing content fails the build too: Astro only warns on a missing file, so fixed pages, settings and the homepage are loaded through helpers that throw. Verified: a bad date and a deleted page both exit 1.
+- 2026-09-26 — Shared fields (dates, place, image, lists…) are `i18n: duplicate` so they're also written to `.en.md`; the same Zod schema serves both languages. `output.omit_empty_optional_fields: true`, and optional schema fields also accept `''`/null (Decap writes those).
+- 2026-09-26 — Homepage copy is its own CMS collection "Forsíða" with two files: `src/content/forsida/is.yml` (structured: hero, cards, bands) and `forsida/en.md` (title, intro, Markdown body). The brief's `sidur` model (title + body) doesn't fit the Icelandic homepage.
+- 2026-09-26 — The membership fee on the homepage comes from Settings ("Árgjald félagsins er {fee} kr.", Siggi's wording). The About and Félagsaðild pages state the fee in their text; the Settings hint says to update those too.
+- 2026-09-26 — News URLs drop the date prefix of the file name: `2024-10-25-slug.is.md` → `/frettir/slug/` (WordPress-style; Phase 3 redirects rely on it). Two items with the same URL fail the build. The `{{year}}-{{month}}-{{day}}` in the CMS slug is the creation date, not the `date` field.
+- 2026-09-26 — New CMS entries get ö→oe in slugs (Sveltia's transliteration); accepted by Siggi to stay Decap-compatible. Migrated WordPress slugs keep ö→o.
+- 2026-09-26 — English routes exist only for entries with an `.en.md`: `/en/frettir/<slug>/`, `/en/vidburdir/<slug>/`, `/en/radstefnur/<year>/`, and fixed pages via `src/pages/en/[...path].astro` (paths from `PAGE_PATHS`). No English list pages yet.
+- 2026-09-26 — Footer "Merki félagsins →" links to the About page's emblem heading, found by its text (/merki|emblem/) because Markdown heading ids come from the heading text.
+- 2026-09-26 — Þumalputtareglur are the `reglur` collection (Icelandic only, 15 fixed files); numbering must be 1…n without gaps or the build fails. The page intro is `sidur/thumalputtareglur.is.md`.
+- 2026-09-26 — 2024 conference seeded from `Ráðstefna_2024.pdf`: programme before the poster table (poster list is Markdown in the body); two typos in the PDF programme corrected (10:30–10:50, O-15 15:30–15:50); sponsors by name, URL only where the PDF prints one, no logos; committee label "Ráðstefnunefnd" as in the PDF; no prices (block hidden when empty).
+- 2026-09-26 — Sveltia pinned to 0.221.1 from unpkg (the CDN build also loads its UI translations from unpkg; `/admin/` only, never public pages). The CMS UI has no Icelandic translation; only labels and hints are Icelandic.
