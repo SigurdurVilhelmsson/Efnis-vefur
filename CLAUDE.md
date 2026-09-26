@@ -21,7 +21,7 @@ Condensed from `KICKOFF.md` (the full brief). If they disagree, `KICKOFF.md` win
 
 - **Astro** (current stable, v7 at time of writing), `output: 'static'`, TypeScript strict. Content collections with Zod schemas. Built-in i18n routing.
 - **Sveltia CMS** at `/admin/`, from CDN with a **pinned version**. Keep the config Decap-compatible where possible (Decap is the fallback), e.g. `widget: markdown` rather than `richtext`.
-- **Cloudflare Pages** hosting; `sveltia-cms-auth` on Cloudflare Workers for GitHub OAuth.
+- **Cloudflare Workers with static assets** hosting (decided 2026-09-26; supersedes KICKOFF's "Cloudflare Pages" — Cloudflare now says to start new projects on Workers); `sveltia-cms-auth` on Cloudflare Workers for GitHub OAuth.
 - **Fonts**: Source Serif 4 (headings) + DM Sans (body), self-hosted. No Google Fonts requests, no analytics, no trackers, no third-party requests from public pages.
 - **Pagefind** (static search, later phase). **Turndown** (WordPress HTML → Markdown, migration script only).
 - Check current docs/versions before using a tool API; don't rely on memory.
@@ -75,6 +75,28 @@ Responsive to phone width; visible keyboard focus (`:focus-visible`); `prefers-r
 - `npm run preview` — serve the build
 - `npm run check:cms` — Zod schemas vs CMS config (first step of `npm run build`)
 - CMS locally: `npm run dev`, then open `http://localhost:4321/admin/index.html` in Chrome/Edge → "Work with Local Repository"
+
+## Status (updated 2026-09-26)
+
+Phases 0–3 done. **Next: Phase 4 (deploy preparation)**, per the decisions logged on 2026-09-26:
+- Workers with static assets: `wrangler.jsonc`, `wrangler` pinned as a dev dependency (approved), build `npm run build`, deploy `npx wrangler deploy`, Workers Builds connected to the repo.
+- Repo `Efnafraedifelag-Islands/Efnis-vefur` (`backend.repo` in `public/admin/config.yml` already set). Siggi still has to make it **private** and add a **second owner**; both go in the manual checklist.
+- `sveltia-cms-auth` on Workers; editors use their own GitHub accounts; direct publishing (no editorial workflow).
+- Demo on the default `*.workers.dev` address; `X-Robots-Tag: noindex` via `public/_headers`, removed at go-live. `ALLOWED_DOMAINS` = the workers.dev host.
+- `redirects-draft.txt` → `public/_redirects` (active on the demo host).
+- Daily rebuild at 00:15 UTC: GitHub Action → Workers Builds deploy hook, stored as a repo secret, plus a manual "Run workflow" button.
+- Deliverable: a step-by-step manual checklist for Siggi (OAuth app, Cloudflare account on efnis1@gmail.com, secrets, inviting board members).
+
+Content backlog (separate session, after Phase 4 unless Siggi says otherwise). Decisions are in the log; the copy proposals are in `docs/texti-tillogur.md`:
+- Hub subpages with WP slugs: `/menntun/` ← Landskeppni, Ólympíulið, Bókagjafir; `/efnafraedi-a-islandi/` ← Orðaskrá, Sprengjugengið. Redirect "Efnafræðinám og keppnir" → `/menntun/`. Tenglar at `/tenglar/` + footer link.
+- Board: history from WP verbatim below the current board; the current board is **2026–2027** and Benjamín's is 2025–2026. The four role TODOs stay until Siggi fills them in.
+- `radstefnur/2024.en.md` from `wp-import/pages/efnis-conference-2024.md`; redirect `/efnis-conference-2024/` → `/en/radstefnur/2024/`.
+- Split news item 2024-09-08 into `.is.md`/`.en.md`; 2024-10-25 gets an Icelandic version (proposal in `docs/texti-tillogur.md`), with the English moved to `.en.md`.
+- "Icelandic Chemistry Society" → "Chemical" where it is the society's name.
+- Facebook group link (`https://www.facebook.com/groups/efnis/`) in the footer and on both About pages.
+- Remaining TODO(texti) copy: Menntun and Efnafræði á Íslandi intros, 404 text, "Liðnir viðburðir" heading, 2027 conference text (is + en).
+
+Outside the repo: abstract submissions via SeaTable, see `docs/seatable-agrip.md`. Before WordPress is switched off: decide on document hosting (57 files, 3 over 25 MiB).
 
 ## Decisions log
 
@@ -134,3 +156,4 @@ Responsive to phone width; visible keyboard focus (`:focus-visible`); `prefers-r
 - 2026-09-26 — Siggi approved the conference registration/abstract UI labels (`// (UI)` strings in `src/lib/i18n.ts`).
 - 2026-09-26 — Abstract submissions: **Airtable only** (Airtable form linked from the conference page + an Airtable Interface for committee review), on the society's account; move to Tally → Airtable if the committee rejects the Airtable form. No form code in the site (an Astro form would need a server-side proxy for the API key).
 - 2026-09-26 — **Supersedes the Airtable entry above:** abstract submissions use **SeaTable** (data in Germany; free plan up to 25 users, web forms, App Builder), on the society's account. SeaTable form linked from the conference page's abstract field; committee reviews in a SeaTable app with status (Innsent → Í yfirferð → Samþykkt / Hafnað). Test the form with one committee member first. Fallback if the form is rejected: Tally → SeaTable via webhook/Make (no native connection).
+- 2026-09-26 — Correction to the SeaTable entry above: **App Builder is Plus-only** (seatable.com/prices), as are per-table/view permissions and form logos. The free-plan setup uses a web form, filtered views and a Kanban view, with the committee in a group with read-write access. Full guide: `docs/seatable-agrip.md`.
