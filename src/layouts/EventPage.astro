@@ -4,7 +4,7 @@ import PageLayout from './PageLayout.astro';
 import Txt from '../components/Txt.astro';
 import type { Crumb } from '../components/PageHero.astro';
 import { render, type CollectionEntry } from 'astro:content';
-import { formatDateTime } from '../lib/format';
+import { formatEventStart } from '../lib/format';
 import { localePath, t, type Lang } from '../lib/i18n';
 
 interface Props {
@@ -20,7 +20,7 @@ const crumbs: Crumb[] = [{ label: s.home, href: localePath('/', lang) }];
 if (lang === 'is') crumbs.push({ label: s.events, href: '/vidburdir/' });
 ---
 
-<PageLayout lang={lang} title={title} meta={formatDateTime(start, lang)} crumbs={crumbs} translation={translation}>
+<PageLayout lang={lang} title={title} meta={formatEventStart(start, lang)} crumbs={crumbs} translation={translation}>
 	<p><strong><Txt text={place} /></strong></p>
 	<Content />
 	{registration_url && <p><a class="btn btn--accent" href={registration_url}>{s.register}</a></p>}

@@ -24,6 +24,15 @@ export function formatDateTime(date: Date, lang: Lang): string {
 	}).format(date);
 }
 
+/**
+ * An event's start: date and time, or the date alone when the time is 00:00
+ * (the convention for "time not decided yet"). Iceland is UTC all year.
+ */
+export function formatEventStart(date: Date, lang: Lang): string {
+	const midnight = date.getUTCHours() === 0 && date.getUTCMinutes() === 0;
+	return midnight ? formatDate(date, lang) : formatDateTime(date, lang);
+}
+
 /** ISO string for the <time datetime> attribute. */
 export function isoDate(date: Date): string {
 	return date.toISOString();

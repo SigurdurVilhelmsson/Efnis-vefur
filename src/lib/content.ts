@@ -70,13 +70,18 @@ export async function newsIn(lang: Lang) {
 
 // ——— Events ———
 
-/** Events in one language, split into upcoming (soonest first) and past (latest first). */
+/**
+ * Events in one language, split into upcoming (soonest first) and past (latest first).
+ * An event counts as upcoming for the whole of its day, so the daily rebuild
+ * just after midnight doesn't drop it before it starts. Iceland is UTC all year.
+ */
 export async function eventsIn(lang: Lang, now = new Date()) {
 	const items = await entriesIn('vidburdir', lang);
 	const time = (item: (typeof items)[number]) => item.entry.data.start.getTime();
+	const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
 	return {
-		upcoming: items.filter((i) => time(i) >= now.getTime()).sort((a, b) => time(a) - time(b)),
-		past: items.filter((i) => time(i) < now.getTime()).sort((a, b) => time(b) - time(a)),
+		upcoming: items.filter((i) => time(i) >= today).sort((a, b) => time(a) - time(b)),
+		past: items.filter((i) => time(i) < today).sort((a, b) => time(b) - time(a)),
 	};
 }
 

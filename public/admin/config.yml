@@ -69,7 +69,7 @@ collections:
     sortable_fields: [start, title]
     fields:
       - { name: title, label: Heiti, widget: string, i18n: true }
-      - { name: start, label: Hefst, widget: datetime, i18n: duplicate }
+      - { name: start, label: Hefst, widget: datetime, i18n: duplicate, hint: 'Ef tími er ekki ákveðinn, veldu kl. 00:00; þá birtist aðeins dagsetningin.' }
       - { name: place, label: Staður, widget: string, i18n: duplicate }
       - { name: registration_url, label: Skráningarslóð, widget: string, required: false, i18n: duplicate, hint: 'Fullt veffang, t.d. https://…' }
       - { name: body, label: Lýsing, widget: markdown, i18n: true }
