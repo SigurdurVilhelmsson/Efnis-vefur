@@ -92,7 +92,7 @@ collections:
     create: true
     i18n: true
     slug: '{{fields.year}}'
-    summary: '{{number}}. ráðstefna — {{year}}'
+    summary: '{{fields.number}}. ráðstefna — {{fields.year}}' # fields.: plain {{year}} is the creation year
     sortable_fields: [year]
     fields:
       - { name: number, label: Númer ráðstefnu, widget: number, value_type: int, i18n: duplicate }
@@ -122,7 +122,7 @@ collections:
         fields:
           - { name: name, label: Nafn, widget: string }
           - { name: logo, label: Merki, widget: image, required: false }
-          - { name: url, label: Vefsíða, widget: string, required: false }
+          - { name: url, label: Vefsíða, widget: string, required: false, hint: Fullt veffang, t.d. https://… }
       - name: prices
         label: Verð
         widget: list
