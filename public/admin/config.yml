@@ -102,6 +102,11 @@ collections:
       - { name: date, label: Dagsetning, widget: datetime, time_format: false, i18n: duplicate }
       - { name: theme, label: Yfirskrift, widget: string, required: false, i18n: true }
       - { name: venue, label: Staður, widget: string, required: false, i18n: duplicate }
+      - { name: registration_url, label: Skráningarslóð, widget: string, required: false, i18n: duplicate, hint: 'Fullt veffang, t.d. https://…' }
+      - { name: registration_deadline, label: Skráningarfrestur, widget: datetime, time_format: false, required: false, i18n: duplicate }
+      - { name: abstract_url, label: Slóð fyrir innsendingu ágripa, widget: string, required: false, i18n: duplicate, hint: 'Fullt veffang, t.d. https://…' }
+      - { name: abstract_deadline, label: Skilafrestur ágripa, widget: datetime, time_format: false, required: false, i18n: duplicate }
+      - { name: abstract_template, label: Sniðmát fyrir ágrip, widget: file, choose_url: false, required: false, i18n: duplicate }
       - name: programme
         label: Dagskrá
         label_singular: Dagskrárliður

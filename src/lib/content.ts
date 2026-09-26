@@ -68,6 +68,18 @@ export async function newsIn(lang: Lang) {
 	return items.sort((a, b) => b.entry.data.date.getTime() - a.entry.data.date.getTime());
 }
 
+// ——— Dates ———
+
+/** Midnight at the start of today, in ms. Iceland is UTC all year. */
+export function startOfToday(now = new Date()): number {
+	return Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+}
+
+/** A deadline is open through the whole of its day; no deadline means open. */
+export function isOpen(deadline: Date | undefined, now = new Date()): boolean {
+	return !deadline || deadline.getTime() >= startOfToday(now);
+}
+
 // ——— Events ———
 
 /**
@@ -78,7 +90,7 @@ export async function newsIn(lang: Lang) {
 export async function eventsIn(lang: Lang, now = new Date()) {
 	const items = await entriesIn('vidburdir', lang);
 	const time = (item: (typeof items)[number]) => item.entry.data.start.getTime();
-	const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+	const today = startOfToday(now);
 	return {
 		upcoming: items.filter((i) => time(i) >= today).sort((a, b) => time(a) - time(b)),
 		past: items.filter((i) => time(i) < today).sort((a, b) => time(b) - time(a)),

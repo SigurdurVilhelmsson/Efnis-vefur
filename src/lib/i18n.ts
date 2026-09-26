@@ -52,6 +52,13 @@ export const ui = {
 		sponsors: 'Styrktaraðilar',
 		committee: 'Ráðstefnunefnd',
 		otherConferences: 'Aðrar ráðstefnur', // (UI)
+		registration: 'Skráning', // (UI)
+		deadline: 'Frestur', // (UI)
+		registrationClosed: 'Skráningu er lokið.', // (UI)
+		abstracts: 'Ágrip', // (UI)
+		submitAbstract: 'Senda inn ágrip', // (UI)
+		abstractTemplate: 'Sniðmát fyrir ágrip', // (UI)
+		abstractsClosed: 'Lokað hefur verið fyrir innsendingu ágripa.', // (UI)
 	},
 	en: {
 		siteName: 'The Icelandic Chemical Society',
@@ -86,6 +93,13 @@ export const ui = {
 		sponsors: 'Sponsors',
 		committee: 'Conference committee',
 		otherConferences: 'Other conferences',
+		registration: 'Registration',
+		deadline: 'Deadline',
+		registrationClosed: 'Registration is closed.',
+		abstracts: 'Abstracts',
+		submitAbstract: 'Submit an abstract',
+		abstractTemplate: 'Abstract template',
+		abstractsClosed: 'Abstract submission is closed.',
 	},
 } as const satisfies Record<Lang, Record<string, string>>;
 

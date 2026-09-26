@@ -26,6 +26,11 @@ const imagePath = z.string().regex(/^\/images\/uploads\/[^/]+$/, {
 	error: 'Myndir eiga að vera í /images/uploads/',
 });
 
+/** Uploaded documents (e.g. an abstract template) share the images folder. */
+const uploadPath = z.string().regex(/^\/images\/uploads\/[^/]+$/, {
+	error: 'Skrár eiga að vera í /images/uploads/',
+});
+
 /** The 15 rule icons in src/icons/. */
 export const RULE_ICONS = [
 	'rule-01-natturulegt',
@@ -75,6 +80,13 @@ export const radstefnur = z.object({
 	/** Unknown for the earliest conferences. */
 	theme: optional(text),
 	venue: optional(text),
+	/** Registration and abstract submission happen in external forms; the
+	 * site only links to them. Buttons disappear after the deadline. */
+	registration_url: optional(z.url()),
+	registration_deadline: optional(z.coerce.date()),
+	abstract_url: optional(z.url()),
+	abstract_deadline: optional(z.coerce.date()),
+	abstract_template: optional(uploadPath),
 	programme: z
 		.array(
 			z.object({

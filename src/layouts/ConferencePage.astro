@@ -5,7 +5,7 @@ import PageHero, { type Crumb } from '../components/PageHero.astro';
 import InfoCard from '../components/InfoCard.astro';
 import ProgrammeTable from '../components/ProgrammeTable.astro';
 import { render, type CollectionEntry } from 'astro:content';
-import { conferenceTitle, entriesIn } from '../lib/content';
+import { conferenceTitle, entriesIn, isOpen } from '../lib/content';
 import { formatDate } from '../lib/format';
 import { localePath, t, type Lang } from '../lib/i18n';
 
@@ -49,6 +49,29 @@ crumbs.push({ label: String(d.year) });
 					{d.prices.map((p) => <><dt>{p.label}</dt><dd>{p.amount}</dd></>)}
 				</dl>
 			</InfoCard>
+			{(d.registration_url || d.registration_deadline) && (
+				<InfoCard title={s.registration}>
+					{d.registration_deadline && (
+						<dl><dt>{s.deadline}</dt><dd><time datetime={d.registration_deadline.toISOString().slice(0, 10)}>{formatDate(d.registration_deadline, lang)}</time></dd></dl>
+					)}
+					{isOpen(d.registration_deadline)
+						? d.registration_url && <a class="btn btn--accent" href={d.registration_url}>{s.register}</a>
+						: <p class="closed">{s.registrationClosed}</p>}
+				</InfoCard>
+			)}
+			{(d.abstract_url || d.abstract_deadline) && (
+				<InfoCard title={s.abstracts}>
+					{d.abstract_deadline && (
+						<dl><dt>{s.deadline}</dt><dd><time datetime={d.abstract_deadline.toISOString().slice(0, 10)}>{formatDate(d.abstract_deadline, lang)}</time></dd></dl>
+					)}
+					{isOpen(d.abstract_deadline)
+						? <>
+							{d.abstract_url && <a class="btn btn--accent" href={d.abstract_url}>{s.submitAbstract}</a>}
+							{d.abstract_template && <p class="template"><a href={d.abstract_template}>{s.abstractTemplate}</a></p>}
+						</>
+						: <p class="closed">{s.abstractsClosed}</p>}
+				</InfoCard>
+			)}
 			{d.sponsors.length > 0 && (
 				<InfoCard title={s.sponsors}>
 					<ul class="sponsors">
@@ -83,6 +106,7 @@ crumbs.push({ label: String(d.year) });
 	.main > h2:first-child { margin-top: 0; }
 	.prose { margin-top: 2.5rem; }
 	.sponsors img { max-height: 3rem; width: auto; }
+	.closed, .template { margin: 0.75rem 0 0; font-size: 0.9rem; }
 	@media (max-width: 860px) {
 		.layout { grid-template-columns: 1fr; }
 	}
