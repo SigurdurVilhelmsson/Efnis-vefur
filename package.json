@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
-    "build": "astro check && astro build",
+    "check:cms": "node --experimental-strip-types --no-warnings scripts/check-cms-config.mjs",
+    "build": "npm run check:cms && astro check && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },

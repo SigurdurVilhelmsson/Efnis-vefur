@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="is">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex" />
+		<title>Efnís — vefstjórn</title>
+	</head>
+	<body>
+		<!--
+			Sveltia CMS, pinned to an exact version. To upgrade, change the version
+			number, test locally, then commit. Release notes:
+			https://github.com/sveltia/sveltia-cms/releases
+			No type="module" and no stylesheet link: the Sveltia docs say both cause problems.
+		-->
+		<script src="https://unpkg.com/@sveltia/cms@0.221.1/dist/sveltia-cms.js"></script>
+		<script>
+			// Previews use the site's own stylesheet, so they look like the real pages.
+			CMS.registerPreviewStyle('/styles/global.css');
+		</script>
+	</body>
+</html>

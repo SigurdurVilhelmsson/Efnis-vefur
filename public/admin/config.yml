@@ -1,0 +1,247 @@
+# Sveltia CMS configuration for efn.is — https://sveltiacms.app/en/docs
+#
+# Every collection here matches a Zod schema in src/lib/schemas.ts.
+# `npm run check:cms` (part of `npm run build`) fails if a field is added to
+# one side but not the other, so change both together.
+#
+# Kept Decap-compatible where possible (Decap CMS is the fallback). Sveltia-only
+# options are marked "Sveltia only"; Decap ignores them.
+
+# Placeholder repo. Phase 4 sets the society's GitHub repo and the OAuth
+# worker (base_url). Local editing ("Work with Local Repository") ignores it.
+backend:
+  name: github
+  repo: efnis/efnis-vefur # TODO(Phase 4): the society's GitHub organisation/repo
+  branch: main
+
+site_url: https://efn.is
+logo_url: /favicon.svg
+app_title: Efnís — vefstjórn # Sveltia only
+
+media_folder: /public/images/uploads
+public_folder: /images/uploads
+
+# Don't write empty optional fields (Sveltia only). The schemas also accept ''.
+output:
+  omit_empty_optional_fields: true
+
+# Icelandic is the main language; English is optional per entry. English is
+# off for new entries and switched on per entry (Sveltia only: initial_locales).
+i18n:
+  structure: multiple_files
+  locales: [is, en]
+  default_locale: is
+  initial_locales: default
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  - name: frettir
+    label: Fréttir
+    label_singular: Frétt
+    folder: src/content/frettir
+    create: true
+    i18n: true
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    summary: '{{title}}'
+    sortable_fields: [date, title]
+    fields:
+      - { name: title, label: Fyrirsögn, widget: string, i18n: true }
+      - { name: date, label: Dagsetning, widget: datetime, time_format: false, i18n: duplicate }
+      - { name: summary, label: Samantekt, widget: text, required: false, i18n: true, hint: Ein til tvær setningar sem birtast í fréttalistanum. }
+      - { name: image, label: Mynd, widget: image, required: false, i18n: duplicate }
+      - { name: image_alt, label: Lýsing á mynd, widget: string, required: false, i18n: true, hint: Stutt lýsing fyrir skjálesara. }
+      - { name: featured, label: Efst á forsíðu, widget: boolean, default: false, required: false, i18n: duplicate }
+      - { name: body, label: Meginmál, widget: markdown, i18n: true }
+
+  - name: vidburdir
+    label: Viðburðir
+    label_singular: Viðburður
+    folder: src/content/vidburdir
+    create: true
+    i18n: true
+    slug: '{{slug}}'
+    summary: '{{title}}'
+    sortable_fields: [start, title]
+    fields:
+      - { name: title, label: Heiti, widget: string, i18n: true }
+      - { name: start, label: Hefst, widget: datetime, i18n: duplicate }
+      - { name: place, label: Staður, widget: string, i18n: duplicate }
+      - { name: registration_url, label: Skráningarslóð, widget: string, required: false, i18n: duplicate, hint: Fullt veffang, t.d. https://… }
+      - { name: body, label: Lýsing, widget: markdown, i18n: true }
+
+  - name: sidur
+    label: Síður
+    label_singular: Síða
+    folder: src/content/sidur
+    create: false
+    delete: false
+    i18n: true
+    summary: '{{title}}'
+    fields:
+      - { name: title, label: Titill, widget: string, i18n: true }
+      - { name: description, label: Stutt lýsing, widget: text, required: false, i18n: true }
+      - { name: body, label: Meginmál, widget: markdown, i18n: true }
+
+  - name: radstefnur
+    label: Ráðstefnur
+    label_singular: Ráðstefna
+    folder: src/content/radstefnur
+    create: true
+    i18n: true
+    slug: '{{fields.year}}'
+    summary: '{{number}}. ráðstefna — {{year}}'
+    sortable_fields: [year]
+    fields:
+      - { name: number, label: Númer ráðstefnu, widget: number, value_type: int, i18n: duplicate }
+      - { name: year, label: Ár, widget: number, value_type: int, i18n: duplicate }
+      - { name: date, label: Dagsetning, widget: datetime, time_format: false, i18n: duplicate }
+      - { name: theme, label: Yfirskrift, widget: string, i18n: true }
+      - { name: venue, label: Staður, widget: string, i18n: duplicate }
+      - name: programme
+        label: Dagskrá
+        label_singular: Dagskrárliður
+        widget: list
+        required: false
+        i18n: duplicate
+        summary: '{{time}} {{title}}'
+        fields:
+          - { name: time, label: Tími, widget: string }
+          - { name: code, label: Númer erindis, widget: string, required: false }
+          - { name: title, label: Titill, widget: string }
+          - { name: speaker, label: Fyrirlesari, widget: string, required: false }
+      - name: sponsors
+        label: Styrktaraðilar
+        label_singular: Styrktaraðili
+        widget: list
+        required: false
+        i18n: duplicate
+        summary: '{{name}}'
+        fields:
+          - { name: name, label: Nafn, widget: string }
+          - { name: logo, label: Merki, widget: image, required: false }
+          - { name: url, label: Vefsíða, widget: string, required: false }
+      - name: prices
+        label: Verð
+        widget: list
+        required: false
+        i18n: true
+        summary: '{{label}}: {{amount}}'
+        fields:
+          - { name: label, label: Skýring, widget: string }
+          - { name: amount, label: Upphæð, widget: string }
+      - { name: committee, label: Ráðstefnunefnd, widget: list, required: false, i18n: duplicate }
+      - { name: body, label: Meginmál, widget: markdown, i18n: true }
+
+  - name: stjorn
+    label: Stjórn
+    label_singular: Stjórnarmaður
+    folder: src/content/stjorn
+    extension: yml
+    format: yml
+    create: true
+    slug: '{{slug}}'
+    identifier_field: name
+    summary: '{{role}}: {{name}}'
+    sortable_fields: [order]
+    fields:
+      - { name: name, label: Nafn, widget: string }
+      - { name: role, label: Hlutverk, widget: string }
+      - { name: order, label: Röð, widget: number, value_type: int }
+
+  - name: reglur
+    label: Þumalputtareglur
+    label_singular: Regla
+    folder: src/content/reglur
+    create: false
+    delete: false
+    summary: '{{n}}. {{title}}'
+    sortable_fields: [n]
+    fields:
+      - { name: n, label: Númer, widget: number, value_type: int }
+      - { name: title, label: Fyrirsögn, widget: string }
+      - { name: card_title, label: Fyrirsögn á korti, widget: string }
+      - { name: card_text, label: Texti á korti, widget: text }
+      - name: icon
+        label: Tákn
+        widget: select
+        options:
+          - rule-01-natturulegt
+          - rule-02-skammtur
+          - rule-03-enumera
+          - rule-04-thungmalmur
+          - rule-05-geislun
+          - rule-06-co2
+          - rule-07-lifraent
+          - rule-08-jardhitavatn
+          - rule-09-klor
+          - rule-10-efnavorur
+          - rule-11-ph
+          - rule-12-surtregn
+          - rule-13-vetni
+          - rule-14-aburdur
+          - rule-15-albraeddsla
+      - { name: body, label: Meginmál, widget: markdown }
+
+  - name: forsida_safn
+    label: Forsíða
+    files:
+      - name: forsida
+        label: Forsíða (íslenska)
+        file: src/content/forsida/is.yml
+        fields:
+          - name: hero
+            label: Borði efst
+            widget: object
+            fields:
+              - { name: eyebrow, label: Yfirfyrirsögn, widget: string }
+              - { name: title, label: Fyrirsögn, widget: string }
+              - { name: tagline, label: Undirfyrirsögn, widget: string }
+              - { name: intro, label: Inngangur, widget: text }
+          - name: cards
+            label: Spjöld
+            label_singular: Spjald
+            widget: list
+            summary: '{{title}}'
+            fields:
+              - { name: title, label: Fyrirsögn, widget: string }
+              - { name: text, label: Texti, widget: text }
+              - { name: link, label: Tengill, widget: string }
+          - name: rules
+            label: Þumalputtareglur
+            widget: object
+            fields:
+              - { name: title, label: Fyrirsögn, widget: string }
+              - { name: text, label: Texti, widget: text }
+          - name: membership
+            label: Félagsaðild
+            widget: object
+            fields:
+              - { name: title, label: Fyrirsögn, widget: string }
+              - { name: text, label: Texti, widget: text, hint: Árgjaldið kemur úr Stillingum. }
+              - { name: link_label, label: Texti á hnappi, widget: string }
+              - { name: link, label: Tengill, widget: string }
+      - name: forsida_en
+        label: Forsíða (enska)
+        file: src/content/forsida/en.md
+        fields:
+          - { name: title, label: Fyrirsögn, widget: string }
+          - { name: description, label: Stutt lýsing, widget: string }
+          - { name: intro, label: Inngangur, widget: text }
+          - { name: body, label: Meginmál, widget: markdown }
+
+  - name: stillingar
+    label: Stillingar
+    files:
+      - name: settings
+        label: Vefstillingar
+        file: src/content/settings/site.yml
+        fields:
+          - { name: contact_email, label: Netfang félagsins, widget: string }
+          - { name: membership_fee, label: Árgjald (kr.), widget: number, value_type: int, hint: Breytið líka textanum á síðunum Um Efnís og Félagsaðild. }
+          - { name: next_event_fallback, label: Texti þegar enginn viðburður er á döfinni, widget: text }
+          - { name: next_event_fallback_en, label: Sami texti á ensku, widget: text, required: false }
+          - { name: emblem_teaser, label: Texti um merkið í fæti, widget: text }
+          - { name: emblem_teaser_en, label: Texti um merkið í fæti (enska), widget: text }
