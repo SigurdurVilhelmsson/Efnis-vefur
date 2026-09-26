@@ -72,8 +72,9 @@ export const radstefnur = z.object({
 	number: z.number().int().positive(),
 	year: z.number().int().min(1999),
 	date: z.coerce.date(),
-	theme: text,
-	venue: text,
+	/** Unknown for the earliest conferences. */
+	theme: optional(text),
+	venue: optional(text),
 	programme: z
 		.array(
 			z.object({

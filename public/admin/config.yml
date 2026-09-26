@@ -100,8 +100,8 @@ collections:
       - { name: number, label: Númer ráðstefnu, widget: number, value_type: int, i18n: duplicate }
       - { name: year, label: Ár, widget: number, value_type: int, i18n: duplicate }
       - { name: date, label: Dagsetning, widget: datetime, time_format: false, i18n: duplicate }
-      - { name: theme, label: Yfirskrift, widget: string, i18n: true }
-      - { name: venue, label: Staður, widget: string, i18n: duplicate }
+      - { name: theme, label: Yfirskrift, widget: string, required: false, i18n: true }
+      - { name: venue, label: Staður, widget: string, required: false, i18n: duplicate }
       - name: programme
         label: Dagskrá
         label_singular: Dagskrárliður

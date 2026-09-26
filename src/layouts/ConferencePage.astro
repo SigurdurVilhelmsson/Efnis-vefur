@@ -45,7 +45,7 @@ crumbs.push({ label: String(d.year) });
 			<InfoCard title={s.info}>
 				<dl>
 					<dt>{s.date}</dt><dd><time datetime={d.date.toISOString().slice(0, 10)}>{formatDate(d.date, lang)}</time></dd>
-					<dt>{s.venue}</dt><dd>{d.venue}</dd>
+					{d.venue && <><dt>{s.venue}</dt><dd>{d.venue}</dd></>}
 					{d.prices.map((p) => <><dt>{p.label}</dt><dd>{p.amount}</dd></>)}
 				</dl>
 			</InfoCard>
