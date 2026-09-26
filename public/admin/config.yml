@@ -20,6 +20,8 @@ app_title: Efnís — vefstjórn # Sveltia only
 
 media_folder: /public/images/uploads
 public_folder: /images/uploads
+# Image fields use choose_url: false: images must be uploaded, never linked
+# from another site (public pages make no third-party requests).
 
 # Don't write empty optional fields (Sveltia only). The schemas also accept ''.
 output:
@@ -51,7 +53,7 @@ collections:
       - { name: title, label: Fyrirsögn, widget: string, i18n: true }
       - { name: date, label: Dagsetning, widget: datetime, time_format: false, i18n: duplicate }
       - { name: summary, label: Samantekt, widget: text, required: false, i18n: true, hint: Ein til tvær setningar sem birtast í fréttalistanum. }
-      - { name: image, label: Mynd, widget: image, required: false, i18n: duplicate }
+      - { name: image, label: Mynd, widget: image, choose_url: false, required: false, i18n: duplicate }
       - { name: image_alt, label: Lýsing á mynd, widget: string, required: false, i18n: true, hint: Stutt lýsing fyrir skjálesara. }
       - { name: featured, label: Efst á forsíðu, widget: boolean, default: false, required: false, i18n: duplicate }
       - { name: body, label: Meginmál, widget: markdown, i18n: true }
@@ -121,7 +123,7 @@ collections:
         summary: '{{name}}'
         fields:
           - { name: name, label: Nafn, widget: string }
-          - { name: logo, label: Merki, widget: image, required: false }
+          - { name: logo, label: Merki, widget: image, choose_url: false, required: false }
           - { name: url, label: Vefsíða, widget: string, required: false, hint: 'Fullt veffang, t.d. https://…' }
       - name: prices
         label: Verð
