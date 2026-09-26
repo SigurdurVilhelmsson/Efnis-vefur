@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
+import { satteri } from '@astrojs/markdown-satteri';
 
 // Unicode ranges for the two Fontsource subsets (same as the design system's
 // colors_and_type.css). Browsers only download the subset a page needs.
@@ -47,6 +48,12 @@ export default defineConfig({
 		locales: ['is', 'en'],
 		defaultLocale: 'is',
 		routing: { prefixDefaultLocale: false },
+	},
+
+	// Smart punctuation would turn straight quotes typed in the CMS into
+	// English “…” quotes on Icelandic pages. Off: text is rendered as typed.
+	markdown: {
+		processor: satteri({ features: { smartPunctuation: false } }),
 	},
 
 	// Self-hosted fonts (no requests to Google). See src/assets/fonts/README.md.
