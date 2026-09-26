@@ -1,0 +1,26 @@
+hero:
+  eyebrow: Efnafræðifélag Íslands
+  title: Efnafræðifélag Íslands
+  tagline: Fagvettvangur efnafræðinga — í kennslu, rannsóknum og atvinnulífi
+  intro: Efnafræðifélag Íslands (Efnís) er fagfélag efnafræðinga, efnaverkfræðinga, kennara og nemenda. Félagið hefur starfað frá árinu 1999 og vinnur að því að efla efnafræði á Íslandi — í skólum, háskólum, rannsóknum og atvinnulífi. Efnís heldur árlega ráðstefnu, styður við efnafræðikennslu og er tengiliður íslenskra efnafræðinga við alþjóðlegt fagsamfélag.
+cards:
+  - title: Efnafræði á Íslandi
+    text: Rannsóknir, iðnaður og nýsköpun — frá jarðhita til lyfjaþróunar.
+    link: /efnafradi-a-islandi/
+  - title: Menntun og úrræði
+    text: "Fyrir kennara og nemendur: keppnir, námsefni, íðorðabanki og fleira."
+    link: /menntun/
+  - title: Ráðstefnur Efnís
+    text: Árleg ráðstefna félagsins — erindi, veggspjöld og fagleg samvera.
+    link: /radstefnur/
+  - title: Um Efnís
+    text: Efnís er vettvangur fyrir alla sem starfa við efnafræði á Íslandi eða hafa áhuga á henni.
+    link: /um-efnis/
+rules:
+  title: Þumalputtareglur um efnafræði
+  text: Fimmtán stuttar reglur til að ræða efnafræði af skynsemi og nákvæmni — án hræðslu eða oftrúar.
+membership:
+  title: Félagsaðild
+  text: Félagsaðild er opin öllum sem lokið hafa háskólaprófi í efnafræði, efnaverkfræði, lífefnafræði eða skyldum greinum, sem og raungreinakennurum í grunn- og framhaldsskólum sem lokið hafa háskólaprófi. Háskólanemar í efnafræði, efnaverkfræði eða lífefnafræði geta sótt um aukaaðild að félaginu.
+  link_label: Nánari upplýsingar um félagsaðild
+  link: /um-efnis/felagsadild/
